@@ -1,0 +1,21 @@
+html {
+    overflow-x: scroll;
+}
+
+body {
+    overflow-x: scroll;
+}
+
+#presentation {
+    border: 1px solid blue;
+    width: 300%;
+}
+
+.container-child {
+    display: inline-block;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    white-space: nowrap;
+    overflow: hidden;
+}
