@@ -1,21 +1,67 @@
-html {
-    overflow-x: scroll;
-}
-
-body {
-    overflow-x: scroll;
-}
-
 #presentation {
-    border: 1px solid blue;
-    width: 300%;
+    width: 60%;
+    display: flex;
+    flex: wrap;
+    overflow: scroll;
+    border: 1px solid black;
+    scroll-behavior: smooth;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+.slidein {
+    animation-duration: 3s;
+    animation-name: slidein;
+}
+
+@keyframes slidein {
+    0% {
+        left: 0px;
+    }
+    10% {
+        padding-left: 100px;
+        right: 10%;
+    }
+
+    100% {
+        right: 50%;
+    }
+}
+#presentation::-webkit-scrollbar {
+    display: none;
 }
 
 .container-child {
     display: inline-block;
     width: 100%;
+    flex: 0 0 100%; /* flex-grow, flex-shrink, flex-basis */
     background-repeat: no-repeat;
     background-size: cover;
-    white-space: nowrap;
-    overflow: hidden;
+    background-position: center;
+    position: relative;
+}
+
+/* NAVIGATION */
+.presentation-navigation {
+    height: 25px;
+    width: 25px;
+    color: beige;
+    cursor: pointer;
+}
+/* BACK ARROW */
+.presentation-back-arrow-container {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    z-index: 1;
+}
+
+/* FORWARD ARROW */
+
+.presentation-forward-arrow-container {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    z-index: 1;
 }
