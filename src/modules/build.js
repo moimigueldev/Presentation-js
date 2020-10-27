@@ -1,50 +1,61 @@
 import { forward, backward } from './variables/navigation';
+import { addEventListenerToForwardButtons } from './functions/navigation';
+
 let container = undefined;
 const slides = [];
+const navigation = [];
 
 const button = document.getElementById('click');
 
 button.addEventListener('click', () => {
-  console.log('click');
-  container.scrollRight += '1160';
-  //   slides[0].classList.add('slidein');
+  // console.log('currentSlide', currentSlide);
 });
 
+// MASTER FUNCTION TO CREATE PRESETATION
 export function build(id) {
   container = document.getElementById(id);
-
-  addSlidesToArray();
-  addNavigation();
+  setupPresentation();
+  createScrollValues();
 }
 
-const addSlidesToArray = () => {
+// MASTER LOOP TO SETUP PRESENTATION CAROUSEL
+const setupPresentation = () => {
   container.childNodes.forEach((el) => {
     if (el.dataset !== undefined) {
       if (el.dataset.slide) {
         slides.push(el);
-        el.classList.add('container-child');
+        addClassToChildren(el);
+        addNavigationSVGs(el);
       }
     }
   });
 };
 
-const addNavigation = () => {
-  slides.forEach((x) => {
-    x.appendChild(forward.cloneNode(true));
-    x.appendChild(backward.cloneNode(true));
-  });
+// ADDS CLASS TO CHILDREN TO CONTAIN IN CAROUSEL
+const addClassToChildren = (el) => {
+  el.classList.add('container-child');
 };
 
-function addClassToImages(container) {
-  container.childNodes.forEach((x) => {
-    if (x.dataset !== undefined) {
-      if (x.dataset.slide) {
-        x.id = `presentationSlide${x.dataset.slide}`;
-        el = x;
-        x.classList.add('container-child');
-      }
+/************************************ */
+/*********   NAVIGATION   *********** */
+/************************************ */
+
+// ADDS NAVIGATION ICONS TO EACH SLIDE
+const addNavigationSVGs = (el) => {
+  el.appendChild(forward.cloneNode(true));
+  el.appendChild(backward.cloneNode(true));
+};
+
+const createScrollValues = () => {
+  let scrollWidth = container.scrollWidth;
+  let widthPerSlide = scrollWidth / slides.length;
+  slides.forEach((el, i) => {
+    if (i === 0) {
+      navigation.push(0);
+    } else {
+      navigation.push(widthPerSlide);
+      widthPerSlide *= 2;
     }
   });
-}
-
-function addIDsToSliders(container) {}
+  addEventListenerToForwardButtons(container, navigation, slides);
+};

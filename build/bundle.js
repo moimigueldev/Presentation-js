@@ -26,40 +26,112 @@ var presentation = (function (exports) {
 </svg>
 </div>`);
 
+  let currentSlide = 0;
+
+  const addEventListenerToForwardButtons = (container, nav, children) => {
+    const elements = document.getElementsByClassName(
+      'presentation-forward-arrow-container'
+    );
+
+    for (let index = 0; index < elements.length; index++) {
+      elements[index].addEventListener('click', () => {
+        goToNextSlide(container, nav, children);
+      });
+    }
+  };
+
+  const goToNextSlide = (container, nav, children) => {
+    Element.prototype.insertChildAtIndex = function (child, index) {
+      if (!index) index = 0;
+      if (index >= this.children.length) {
+        this.appendChild(child);
+      } else {
+        this.insertBefore(child, this.children[index]);
+      }
+    };
+
+    if (children[currentSlide + 1]) {
+      currentSlide++;
+      container.scrollLeft = nav[currentSlide];
+    } else {
+      let tempChildren = children.splice(0, children.length - 1);
+      children = children.concat(tempChildren);
+      // container.childNodes = children;
+      console.log('children', children);
+      console.log('conainer', container.childNodes[5].dataset.slide);
+      container.removeChild(container.childNodes[5]);
+      container.insertChildAtIndex(children[1], 5);
+      // container.childNodes[5] = children[1];
+
+      container.childnore;
+
+      // currentSlide = 1;
+      // container.scrollLeft = nav[currentSlide];
+      // currentSlide++;
+    }
+
+    //   console.log('currentSlide', curr);
+
+    //   container.scrollLeft = 1133;
+  };
+
   let container = undefined;
   const slides = [];
+  const navigation = [];
 
   const button = document.getElementById('click');
 
   button.addEventListener('click', () => {
-    console.log('click');
-    container.scrollLeft += '1150';
-    //   slides[0].classList.add('slidein');
+    // console.log('currentSlide', currentSlide);
   });
 
+  // MASTER FUNCTION TO CREATE PRESETATION
   function build(id) {
     container = document.getElementById(id);
-
-    addSlidesToArray();
-    addNavigation();
+    setupPresentation();
+    createScrollValues();
   }
 
-  const addSlidesToArray = () => {
+  // MASTER LOOP TO SETUP PRESENTATION CAROUSEL
+  const setupPresentation = () => {
     container.childNodes.forEach((el) => {
       if (el.dataset !== undefined) {
         if (el.dataset.slide) {
           slides.push(el);
-          el.classList.add('container-child');
+          addClassToChildren(el);
+          addNavigationSVGs(el);
         }
       }
     });
   };
 
-  const addNavigation = () => {
-    slides.forEach((x) => {
-      x.appendChild(forward.cloneNode(true));
-      x.appendChild(backward.cloneNode(true));
+  // ADDS CLASS TO CHILDREN TO CONTAIN IN CAROUSEL
+  const addClassToChildren = (el) => {
+    el.classList.add('container-child');
+  };
+
+  /************************************ */
+  /*********   NAVIGATION   *********** */
+  /************************************ */
+
+  // ADDS NAVIGATION ICONS TO EACH SLIDE
+  const addNavigationSVGs = (el) => {
+    el.appendChild(forward.cloneNode(true));
+    el.appendChild(backward.cloneNode(true));
+  };
+
+  const createScrollValues = () => {
+    let scrollWidth = container.scrollWidth;
+    let widthPerSlide = scrollWidth / slides.length;
+    slides.forEach((el, i) => {
+      if (i === 0) {
+        navigation.push(0);
+      } else {
+        navigation.push(widthPerSlide);
+        widthPerSlide *= 2;
+      }
     });
+    addEventListenerToForwardButtons(container, navigation, slides);
   };
 
   function validateID(id) {
@@ -85,4 +157,5 @@ var presentation = (function (exports) {
   Object.defineProperty(exports, '__esModule', { value: true });
 
   return exports;
-})({});
+
+}({}));

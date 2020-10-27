@@ -28,13 +28,14 @@ html {
         right: 50%;
     }
 }
-#presentation::-webkit-scrollbar {
+/* #presentation::-webkit-scrollbar {
     display: none;
-}
+} */
 
 .container-child {
     display: inline-block;
     width: 100%;
+    min-width: 100%;
     flex: 0 0 100%; /* flex-grow, flex-shrink, flex-basis */
     background-repeat: no-repeat;
     background-size: cover;
