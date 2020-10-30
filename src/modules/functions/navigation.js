@@ -1,8 +1,12 @@
 import { forward, backward } from '../variables/navigation';
+import { options } from '../variables/options';
 
-let currentSlide = 0;
-const slides = [];
-const navigation = [];
+let interval = setInterval(() => {
+  goToNextSlide();
+}, 3000);
+
+clearInterval(interval);
+let masterContainer = undefined;
 
 Element.prototype.insertChildAtIndex = function (child, index) {
   if (!index) index = 0;
@@ -13,8 +17,7 @@ Element.prototype.insertChildAtIndex = function (child, index) {
   }
 };
 
-export const addEventListenersToNavigation = (container) => {
-  console.log('hello');
+export const addEventListenersToNavigation = () => {
   const forwardSvgs = document.getElementsByClassName(
     'presentation-forward-arrow-container'
   );
@@ -25,37 +28,33 @@ export const addEventListenersToNavigation = (container) => {
 
   for (let index = 0; index < forwardSvgs.length; index++) {
     forwardSvgs[index].addEventListener('click', () => {
-      goToNextSlide(container);
+      goToNextSlide();
     });
 
     backwardSvgs[index].addEventListener('click', () => {
-      goToPrevSlide(container);
+      goToPrevSlide();
     });
   }
 };
 
 // FORWARD
-const goToNextSlide = (container) => {
-  console.log('going to nextslide');
-  container.scrollLeft += container.clientWidth;
-  container.style.scrollBehavior = 'auto';
-  //   let child = container.childrenp[0].clone(true);
+const goToNextSlide = () => {
+  masterContainer.scrollLeft += masterContainer.clientWidth;
+  masterContainer.style.scrollBehavior = 'auto';
   setTimeout(() => {
-    container.appendChild(container.children[0].cloneNode(true));
+    masterContainer.appendChild(masterContainer.children[0].cloneNode(true));
 
-    for (let index = 0; index < container.children.length; index++) {
-      console.log('child', container.children[index] === container.children[0]);
-      if (container.children[index] === container.children[0]) {
-        console.log('index', index);
+    for (let index = 0; index < masterContainer.children.length; index++) {
+      if (masterContainer.children[index] === masterContainer.children[0]) {
       }
     }
 
-    reAttachEventListeners(container);
+    reAttachEventListeners(masterContainer);
 
-    container.removeChild(container.children[0]);
-    container.scrollLeft = 0;
+    masterContainer.removeChild(masterContainer.children[0]);
+    masterContainer.scrollLeft = 0;
 
-    container.style.scrollBehavior = 'smooth';
+    masterContainer.style.scrollBehavior = 'smooth';
   }, 600);
 };
 
@@ -83,20 +82,17 @@ const reAttachEventListeners = (container) => {
 };
 
 // BACKWARD
-const goToPrevSlide = (container) => {
-  console.log('prevslide', container.scrollLeft);
-
-  if (container.scrollLeft === 0) {
-    container.prepend(container.children[container.children.length - 1]);
-    container.style.scrollBehavior = 'auto';
-    container.scrollLeft = container.clientWidth;
-    container.style.scrollBehavior = 'smooth';
+const goToPrevSlide = () => {
+  if (masterContainer.scrollLeft === 0) {
+    masterContainer.prepend(
+      masterContainer.children[masterContainer.children.length - 1]
+    );
+    masterContainer.style.scrollBehavior = 'auto';
+    masterContainer.scrollLeft = masterContainer.clientWidth;
+    masterContainer.style.scrollBehavior = 'smooth';
   }
-  //   container.style.scrollBehavior = 'smooth';
 
-  container.scrollLeft -= container.clientWidth;
-
-  //   container.style.scrollBehavior = 'auto';
+  masterContainer.scrollLeft -= masterContainer.clientWidth;
 };
 
 // ADDS NAVIGATION ICONS TO EACH SLIDE
@@ -106,19 +102,14 @@ export const addNavigationSVGs = (el) => {
 };
 
 export const createScrollValues = (container) => {
-  let scrollWidth = container.scrollWidth;
-  let widthPerSlide = scrollWidth / slides.length;
-  slides.forEach((el, i) => {
-    if (i === 0) {
-      navigation.push(0);
-    } else {
-      navigation.push(widthPerSlide);
-      widthPerSlide *= 2;
-    }
-  });
-  addEventListenersToNavigation(container, navigation, slides);
+  addEventListenersToNavigation(container);
 };
 
-export const addToSlides = (el) => {
-  slides.push(el);
+// ADDS CLASS TO CHILDREN TO CONTAIN IN CAROUSEL
+export const addClassToChildren = (el) => {
+  el.classList.add('container-child');
+};
+
+export const startNavigation = (container) => {
+  masterContainer = container;
 };

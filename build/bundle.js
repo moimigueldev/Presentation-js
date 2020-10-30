@@ -26,6 +26,19 @@ var presentation = (function (exports) {
 </svg>
 </div>`);
 
+  const options = {
+    timer: 6000,
+    arrows: true,
+    autoSlide: true,
+  };
+
+  let interval = setInterval(() => {
+    goToNextSlide();
+  }, 3000);
+
+  clearInterval(interval);
+  let masterContainer = undefined;
+
   Element.prototype.insertChildAtIndex = function (child, index) {
     if (!index) index = 0;
     if (index >= this.children.length) {
@@ -35,8 +48,7 @@ var presentation = (function (exports) {
     }
   };
 
-  const addEventListenersToNavigation = (container) => {
-    console.log('hello');
+  const addEventListenersToNavigation = () => {
     const forwardSvgs = document.getElementsByClassName(
       'presentation-forward-arrow-container'
     );
@@ -47,37 +59,32 @@ var presentation = (function (exports) {
 
     for (let index = 0; index < forwardSvgs.length; index++) {
       forwardSvgs[index].addEventListener('click', () => {
-        goToNextSlide(container);
+        goToNextSlide();
       });
 
       backwardSvgs[index].addEventListener('click', () => {
-        goToPrevSlide(container);
+        goToPrevSlide();
       });
     }
   };
 
   // FORWARD
-  const goToNextSlide = (container) => {
-    console.log('going to nextslide');
-    container.scrollLeft += container.clientWidth;
-    container.style.scrollBehavior = 'auto';
-    //   let child = container.childrenp[0].clone(true);
+  const goToNextSlide = () => {
+    masterContainer.scrollLeft += masterContainer.clientWidth;
+    masterContainer.style.scrollBehavior = 'auto';
     setTimeout(() => {
-      container.appendChild(container.children[0].cloneNode(true));
+      masterContainer.appendChild(masterContainer.children[0].cloneNode(true));
 
-      for (let index = 0; index < container.children.length; index++) {
-        console.log('child', container.children[index] === container.children[0]);
-        if (container.children[index] === container.children[0]) {
-          console.log('index', index);
-        }
+      for (let index = 0; index < masterContainer.children.length; index++) {
+        if (masterContainer.children[index] === masterContainer.children[0]) ;
       }
 
-      reAttachEventListeners(container);
+      reAttachEventListeners(masterContainer);
 
-      container.removeChild(container.children[0]);
-      container.scrollLeft = 0;
+      masterContainer.removeChild(masterContainer.children[0]);
+      masterContainer.scrollLeft = 0;
 
-      container.style.scrollBehavior = 'smooth';
+      masterContainer.style.scrollBehavior = 'smooth';
     }, 600);
   };
 
@@ -89,7 +96,7 @@ var presentation = (function (exports) {
         'presentation-forward-arrow-container'
       ) {
         lastChild.children[index].addEventListener('click', () => {
-          goToNextSlide(container);
+          goToNextSlide();
         });
       }
 
@@ -98,27 +105,24 @@ var presentation = (function (exports) {
         'presentation-back-arrow-container'
       ) {
         lastChild.children[index].addEventListener('click', () => {
-          goToPrevSlide(container);
+          goToPrevSlide();
         });
       }
     }
   };
 
   // BACKWARD
-  const goToPrevSlide = (container) => {
-    console.log('prevslide', container.scrollLeft);
-
-    if (container.scrollLeft === 0) {
-      container.prepend(container.children[container.children.length - 1]);
-      container.style.scrollBehavior = 'auto';
-      container.scrollLeft = container.clientWidth;
-      container.style.scrollBehavior = 'smooth';
+  const goToPrevSlide = () => {
+    if (masterContainer.scrollLeft === 0) {
+      masterContainer.prepend(
+        masterContainer.children[masterContainer.children.length - 1]
+      );
+      masterContainer.style.scrollBehavior = 'auto';
+      masterContainer.scrollLeft = masterContainer.clientWidth;
+      masterContainer.style.scrollBehavior = 'smooth';
     }
-    //   container.style.scrollBehavior = 'smooth';
 
-    container.scrollLeft -= container.clientWidth;
-
-    //   container.style.scrollBehavior = 'auto';
+    masterContainer.scrollLeft -= masterContainer.clientWidth;
   };
 
   // ADDS NAVIGATION ICONS TO EACH SLIDE
@@ -128,8 +132,16 @@ var presentation = (function (exports) {
   };
 
   const createScrollValues = (container) => {
-    let scrollWidth = container.scrollWidth;
-    addEventListenersToNavigation(container);
+    addEventListenersToNavigation();
+  };
+
+  // ADDS CLASS TO CHILDREN TO CONTAIN IN CAROUSEL
+  const addClassToChildren = (el) => {
+    el.classList.add('container-child');
+  };
+
+  const startNavigation = (container) => {
+    masterContainer = container;
   };
 
   let container = undefined;
@@ -143,8 +155,10 @@ var presentation = (function (exports) {
   // MASTER FUNCTION TO CREATE PRESETATION
   function build(id) {
     container = document.getElementById(id);
+    // setupConfig(options);
+    startNavigation(container);
     setupPresentation();
-    createScrollValues(container);
+    createScrollValues();
   }
 
   // MASTER LOOP TO SETUP PRESENTATION CAROUSEL
@@ -161,11 +175,6 @@ var presentation = (function (exports) {
     }
   };
 
-  // ADDS CLASS TO CHILDREN TO CONTAIN IN CAROUSEL
-  const addClassToChildren = (el) => {
-    el.classList.add('container-child');
-  };
-
   function validateID(id) {
     const container = document.getElementById(id);
     if (container && container !== undefined) {
@@ -176,11 +185,26 @@ var presentation = (function (exports) {
     }
   }
 
-  function start(id) {
+  const setupConfig = (config) => {
+    if (config) {
+      for (const option in config) {
+        if (options[option]) {
+          if (typeof config[option] === typeof options[option]) {
+            options[option] = config[option];
+          } else {
+            console.error(`invalid value for ${option}`);
+          }
+        }
+      }
+    }
+  };
+
+  function start(id, config) {
     if (!validateID(id)) {
       return false;
     }
 
+    setupConfig(config);
     build(id);
   }
 

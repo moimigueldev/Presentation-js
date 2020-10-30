@@ -15,7 +15,7 @@
 <body>
 
 
-    <div class="slick1 presentation-container mx-auto mt-5 " id="presentation" style="position: relative;">
+    <div class="slick1 presentation-container mx-auto " id="presentation">
         <div data-slide="1"
             style="background-image: url('https://hatrabbits.com/wp-content/uploads/2016/12/rare-combinaties.jpg'); height: 600px">
 
@@ -28,10 +28,10 @@
             style="background-image: url('https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg'); height: 600px">
 
         </div>
-        <!---<div data-slide="4"
-            style="background-image: url('https://hatrabbits.com/wp-content/uploads/2016/12/rare-combinaties.jpg'); height: 600px">
+        <div data-slide="4"
+            style="background-image: url('https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80'); height: 600px">
 
-        </div>-->
+        </div>
 
     </div>
 
@@ -45,7 +45,7 @@
     <script src="build/bundle.js"></script>
 
     <script>
-        presentation.start('presentation')
+        presentation.start('presentation', { arrows: true, timer: 3000, autoSlide: true })
     </script>
 
 

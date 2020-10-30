@@ -3,34 +3,12 @@
     display: flex;
     flex: wrap;
     overflow: scroll;
-    border: 1px solid black;
     scroll-behavior: smooth;
 }
 
-html {
-    scroll-behavior: smooth;
-}
-.slidein {
-    animation-duration: 3s;
-    animation-name: slidein;
-}
-
-@keyframes slidein {
-    0% {
-        left: 0px;
-    }
-    10% {
-        padding-left: 100px;
-        right: 10%;
-    }
-
-    100% {
-        right: 50%;
-    }
-}
-/* #presentation::-webkit-scrollbar {
+#presentation::-webkit-scrollbar {
     display: none;
-} */
+}
 
 .container-child {
     display: inline-block;

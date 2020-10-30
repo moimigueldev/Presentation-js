@@ -1,8 +1,8 @@
 import {
-  addEventListenersToNavigation,
   addNavigationSVGs,
   createScrollValues,
-  addToSlides,
+  startNavigation,
+  addClassToChildren,
 } from './functions/navigation';
 
 let container = undefined;
@@ -16,8 +16,10 @@ button.addEventListener('click', () => {
 // MASTER FUNCTION TO CREATE PRESETATION
 export function build(id) {
   container = document.getElementById(id);
+  // setupConfig(options);
+  startNavigation(container);
   setupPresentation();
-  createScrollValues(container);
+  createScrollValues();
 }
 
 // MASTER LOOP TO SETUP PRESENTATION CAROUSEL
@@ -28,26 +30,8 @@ const setupPresentation = () => {
     if (child.dataset.slide) {
       addClassToChildren(child);
       addNavigationSVGs(child);
-      addToSlides(child);
     } else {
       container.removeChild(child);
     }
   }
-
-  addImageToFront();
-};
-
-const addImageToFront = () => {
-  // console.log('hello');
-  // container.prepend(
-  //   container.children[container.children.length - 1].cloneNode(true)
-  // );
-  // container.style.scrollBehavior = 'auto';
-  // container.scrollLeft = container.clientWidth;
-  // container.style.scrollBehavior = 'smooth';
-};
-
-// ADDS CLASS TO CHILDREN TO CONTAIN IN CAROUSEL
-const addClassToChildren = (el) => {
-  el.classList.add('container-child');
 };
