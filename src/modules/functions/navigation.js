@@ -13,7 +13,8 @@ Element.prototype.insertChildAtIndex = function (child, index) {
   }
 };
 
-export const addEventListenersToNavigation = (container, nav, children) => {
+export const addEventListenersToNavigation = (container) => {
+  console.log('hello');
   const forwardSvgs = document.getElementsByClassName(
     'presentation-forward-arrow-container'
   );
@@ -24,49 +25,78 @@ export const addEventListenersToNavigation = (container, nav, children) => {
 
   for (let index = 0; index < forwardSvgs.length; index++) {
     forwardSvgs[index].addEventListener('click', () => {
-      goToNextSlide(container, nav, children);
+      goToNextSlide(container);
     });
 
     backwardSvgs[index].addEventListener('click', () => {
-      goToPrevSlide(container, nav, children);
+      goToPrevSlide(container);
     });
   }
 };
 
 // FORWARD
-const goToNextSlide = (container, nav, children) => {
-  console.log('clicked');
-  container.scrollLeft = container.clientWidth;
-
+const goToNextSlide = (container) => {
+  console.log('going to nextslide');
+  container.scrollLeft += container.clientWidth;
   container.style.scrollBehavior = 'auto';
-  //   let childContainer = container.children[0].appendChild(forward.cloneNode(true))
-
+  //   let child = container.childrenp[0].clone(true);
   setTimeout(() => {
-    container.children[0].getAttribute('listener');
     container.appendChild(container.children[0].cloneNode(true));
-    console.log('children', container.children.length);
-    container.removeChild(container.children[0]);
-    container.children[container.children.length - 1].addEventListener(
-      'click',
-      () => {
-        goToNextSlide(container, nav, children);
+
+    for (let index = 0; index < container.children.length; index++) {
+      console.log('child', container.children[index] === container.children[0]);
+      if (container.children[index] === container.children[0]) {
+        console.log('index', index);
       }
-    );
-    container.scrollRight = 0;
+    }
+
+    reAttachEventListeners(container);
+
+    container.removeChild(container.children[0]);
     container.scrollLeft = 0;
+
     container.style.scrollBehavior = 'smooth';
-  }, 500);
+  }, 600);
+};
+
+const reAttachEventListeners = (container) => {
+  let lastChild = container.children[container.children.length - 1];
+  for (let index = 0; index < lastChild.children.length; index++) {
+    if (
+      lastChild.children[index].classList[0] ===
+      'presentation-forward-arrow-container'
+    ) {
+      lastChild.children[index].addEventListener('click', () => {
+        goToNextSlide(container);
+      });
+    }
+
+    if (
+      lastChild.children[index].classList[0] ===
+      'presentation-back-arrow-container'
+    ) {
+      lastChild.children[index].addEventListener('click', () => {
+        goToPrevSlide(container);
+      });
+    }
+  }
 };
 
 // BACKWARD
-const goToPrevSlide = (container, nav, children) => {
-  //   if (children[currentSlide - 1]) {
-  //     console.log('yes');
-  //     currentSlide--;
-  //     container.scrollLeft = nav[currentSlide];
-  //   } else {
-  //     console.log('no');
-  //   }
+const goToPrevSlide = (container) => {
+  console.log('prevslide', container.scrollLeft);
+
+  if (container.scrollLeft === 0) {
+    container.prepend(container.children[container.children.length - 1]);
+    container.style.scrollBehavior = 'auto';
+    container.scrollLeft = container.clientWidth;
+    container.style.scrollBehavior = 'smooth';
+  }
+  //   container.style.scrollBehavior = 'smooth';
+
+  container.scrollLeft -= container.clientWidth;
+
+  //   container.style.scrollBehavior = 'auto';
 };
 
 // ADDS NAVIGATION ICONS TO EACH SLIDE
@@ -92,7 +122,3 @@ export const createScrollValues = (container) => {
 export const addToSlides = (el) => {
   slides.push(el);
 };
-
-function addEventListener() {
-  console.log('adding event listeners');
-}

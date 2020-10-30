@@ -33,6 +33,18 @@ const setupPresentation = () => {
       container.removeChild(child);
     }
   }
+
+  addImageToFront();
+};
+
+const addImageToFront = () => {
+  // console.log('hello');
+  // container.prepend(
+  //   container.children[container.children.length - 1].cloneNode(true)
+  // );
+  // container.style.scrollBehavior = 'auto';
+  // container.scrollLeft = container.clientWidth;
+  // container.style.scrollBehavior = 'smooth';
 };
 
 // ADDS CLASS TO CHILDREN TO CONTAIN IN CAROUSEL
