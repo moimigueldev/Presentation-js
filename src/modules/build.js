@@ -5,15 +5,14 @@ import {
   addClassToChildren,
 } from './functions/navigation';
 
-import { options } from './variables/options';
-console.log('optikons', options);
+// import { setupConfig } from './functions/config';
 
 let container = undefined;
 
 // MASTER FUNCTION TO CREATE PRESETATION
 export function build(id) {
   container = document.getElementById(id);
-  // setupConfig(options);
+  // setupConfig();
   startNavigation(container);
   setupPresentation();
   createScrollValues();
@@ -25,10 +24,7 @@ const setupPresentation = () => {
     let child = container.children[i];
     if (child.dataset.slide) {
       addClassToChildren(child);
-
-      if (options.arrows) {
-        addNavigationSVGs(child);
-      }
+      addNavigationSVGs(child);
     } else {
       container.removeChild(child);
     }

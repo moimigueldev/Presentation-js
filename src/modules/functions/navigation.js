@@ -2,9 +2,9 @@ import { forward, backward } from '../variables/navigation';
 import { options } from '../variables/options';
 
 let interval = setInterval(() => {
-  console.log('go to next slide');
+  console.log('go to next slide', options.timer);
   goToNextSlide();
-}, 3000);
+}, options.timer);
 
 // clearInterval(interval);
 let masterContainer = undefined;
@@ -98,8 +98,10 @@ const goToPrevSlide = () => {
 
 // ADDS NAVIGATION ICONS TO EACH SLIDE
 export const addNavigationSVGs = (el) => {
-  el.appendChild(forward.cloneNode(true));
-  el.appendChild(backward.cloneNode(true));
+  if (options.arrows) {
+    el.appendChild(forward.cloneNode(true));
+    el.appendChild(backward.cloneNode(true));
+  }
 };
 
 export const createScrollValues = (container) => {
