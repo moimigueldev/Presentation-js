@@ -2,11 +2,10 @@ import { forward, backward } from '../variables/navigation';
 import { options } from '../variables/options';
 
 let interval = setInterval(() => {
-  console.log('go to next slide', options.timer);
   goToNextSlide();
 }, options.timer);
 
-// clearInterval(interval);
+clearInterval(interval);
 let masterContainer = undefined;
 
 Element.prototype.insertChildAtIndex = function (child, index) {
