@@ -7,15 +7,15 @@ import {
 
 import { presentationContainer } from '../modules/variables/container';
 
-// import { setupConfig } from './functions/config';
-
 let container = undefined;
 
 // MASTER FUNCTION TO CREATE PRESETATION
 export function build() {
   container = presentationContainer.element;
-
+  console.log('this is the container', container);
   // setupConfig();
+
+  addClassToContainer();
   startNavigation(container);
   setupPresentation();
   createScrollValues();
@@ -32,4 +32,8 @@ const setupPresentation = () => {
       container.removeChild(child);
     }
   }
+};
+
+const addClassToContainer = () => {
+  container.classList.add('presentation-js-setup');
 };
