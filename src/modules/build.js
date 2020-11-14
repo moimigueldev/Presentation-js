@@ -5,13 +5,16 @@ import {
   addClassToChildren,
 } from './functions/navigation';
 
+import { presentationContainer } from '../modules/variables/container';
+
 // import { setupConfig } from './functions/config';
 
 let container = undefined;
 
 // MASTER FUNCTION TO CREATE PRESETATION
-export function build(id) {
-  container = document.getElementById(id);
+export function build() {
+  container = presentationContainer.element;
+
   // setupConfig();
   startNavigation(container);
   setupPresentation();
