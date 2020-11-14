@@ -12,6 +12,4 @@ export const setupConfig = (config) => {
       }
     }
   }
-
-  console.log('done setting up options', options);
 };

@@ -14,7 +14,7 @@ export function build() {
   container = presentationContainer.element;
 
   addClassToContainer();
-  startNavigation(container);
+  startNavigation();
   setupPresentation();
   createScrollValues();
 }

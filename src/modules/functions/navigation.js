@@ -1,13 +1,8 @@
 import { forward, backward } from '../variables/navigation';
 import { options } from '../variables/options';
-
-// let interval = setInterval(() => {
-//   goToNextSlide();
-// }, options.timer);
+import { presentationContainer } from '../variables/container';
 
 let slideIntervalSpeed = undefined;
-
-// clearInterval(interval);
 let masterContainer = undefined;
 
 Element.prototype.insertChildAtIndex = function (child, index) {
@@ -41,51 +36,23 @@ export const addEventListenersToNavigation = () => {
 
 // FORWARD
 const goToNextSlide = () => {
+  clearInterval(slideIntervalSpeed);
   masterContainer.scrollLeft += masterContainer.clientWidth;
   masterContainer.style.scrollBehavior = 'auto';
+
   setTimeout(() => {
     masterContainer.appendChild(masterContainer.children[0].cloneNode(true));
-
-    for (let index = 0; index < masterContainer.children.length; index++) {
-      if (masterContainer.children[index] === masterContainer.children[0]) {
-      }
-    }
-
-    reAttachEventListeners(masterContainer);
-
+    reAttachEventListeners();
     masterContainer.removeChild(masterContainer.children[0]);
     masterContainer.scrollLeft = 0;
-
     masterContainer.style.scrollBehavior = 'smooth';
   }, 600);
-};
-
-const reAttachEventListeners = (container) => {
-  let lastChild = container.children[container.children.length - 1];
-  for (let index = 0; index < lastChild.children.length; index++) {
-    if (
-      lastChild.children[index].classList[0] ===
-      'presentation-forward-arrow-container'
-    ) {
-      lastChild.children[index].addEventListener('click', () => {
-        goToNextSlide(container);
-      });
-    }
-
-    if (
-      lastChild.children[index].classList[0] ===
-      'presentation-back-arrow-container'
-    ) {
-      lastChild.children[index].addEventListener('click', () => {
-        goToPrevSlide(container);
-      });
-    }
-  }
+  startSlideInterval();
 };
 
 // BACKWARD
 const goToPrevSlide = () => {
-  clearInterval(startSlideInterval);
+  clearInterval(slideIntervalSpeed);
 
   if (masterContainer.scrollLeft === 0) {
     masterContainer.prepend(
@@ -100,6 +67,29 @@ const goToPrevSlide = () => {
   startSlideInterval();
 };
 
+const reAttachEventListeners = () => {
+  let lastChild = masterContainer.children[masterContainer.children.length - 1];
+  for (let index = 0; index < lastChild.children.length; index++) {
+    if (
+      lastChild.children[index].classList[0] ===
+      'presentation-forward-arrow-container'
+    ) {
+      lastChild.children[index].addEventListener('click', () => {
+        goToNextSlide();
+      });
+    }
+
+    if (
+      lastChild.children[index].classList[0] ===
+      'presentation-back-arrow-container'
+    ) {
+      lastChild.children[index].addEventListener('click', () => {
+        goToPrevSlide();
+      });
+    }
+  }
+};
+
 // ADDS NAVIGATION ICONS TO EACH SLIDE
 export const addNavigationSVGs = (el) => {
   if (options.arrows) {
@@ -108,8 +98,8 @@ export const addNavigationSVGs = (el) => {
   }
 };
 
-export const createScrollValues = (container) => {
-  addEventListenersToNavigation(container);
+export const createScrollValues = () => {
+  addEventListenersToNavigation();
 };
 
 // ADDS CLASS TO CHILDREN TO CONTAIN IN CAROUSEL
@@ -117,8 +107,8 @@ export const addClassToChildren = (el) => {
   el.classList.add('container-child');
 };
 
-export const startNavigation = (container) => {
-  masterContainer = container;
+export const startNavigation = () => {
+  masterContainer = presentationContainer.element;
   startSlideInterval();
 };
 
