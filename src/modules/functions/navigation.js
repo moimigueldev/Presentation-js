@@ -1,11 +1,13 @@
 import { forward, backward } from '../variables/navigation';
 import { options } from '../variables/options';
 
-let interval = setInterval(() => {
-  goToNextSlide();
-}, options.timer);
+// let interval = setInterval(() => {
+//   goToNextSlide();
+// }, options.timer);
 
-clearInterval(interval);
+let slideIntervalSpeed = undefined;
+
+// clearInterval(interval);
 let masterContainer = undefined;
 
 Element.prototype.insertChildAtIndex = function (child, index) {
@@ -83,6 +85,8 @@ const reAttachEventListeners = (container) => {
 
 // BACKWARD
 const goToPrevSlide = () => {
+  clearInterval(startSlideInterval);
+
   if (masterContainer.scrollLeft === 0) {
     masterContainer.prepend(
       masterContainer.children[masterContainer.children.length - 1]
@@ -93,6 +97,7 @@ const goToPrevSlide = () => {
   }
 
   masterContainer.scrollLeft -= masterContainer.clientWidth;
+  startSlideInterval();
 };
 
 // ADDS NAVIGATION ICONS TO EACH SLIDE
@@ -114,4 +119,11 @@ export const addClassToChildren = (el) => {
 
 export const startNavigation = (container) => {
   masterContainer = container;
+  startSlideInterval();
+};
+
+const startSlideInterval = () => {
+  slideIntervalSpeed = setInterval(() => {
+    goToNextSlide();
+  }, options.timer);
 };

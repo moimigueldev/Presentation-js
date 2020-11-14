@@ -12,8 +12,6 @@ let container = undefined;
 // MASTER FUNCTION TO CREATE PRESETATION
 export function build() {
   container = presentationContainer.element;
-  console.log('this is the container', container);
-  // setupConfig();
 
   addClassToContainer();
   startNavigation(container);

@@ -6,7 +6,7 @@
     scroll-behavior: smooth;
 }
 
-#presentation::-webkit-scrollbar {
+.presentation-js-setup::-webkit-scrollbar {
     display: none;
 }
 
