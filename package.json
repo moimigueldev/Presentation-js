@@ -1,6 +1,6 @@
 {
   "name": "presentation-js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simplistic carousel package with out the need of JQuery",
   "main": "index.js",
   "scripts": {
