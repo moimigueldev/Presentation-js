@@ -6,7 +6,6 @@ export function start(config) {
   if (!checkIfContainerExist()) {
     return false;
   }
-
   setupConfig(config);
   build();
 }
