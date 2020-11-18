@@ -4,6 +4,7 @@
     flex: wrap;
     overflow: scroll;
     scroll-behavior: smooth;
+    position: relative;
 }
 
 .presentation-js-setup::-webkit-scrollbar {
@@ -43,4 +44,23 @@
     top: 50%;
     right: 10px;
     z-index: 1;
+}
+
+/*******************************************************
+                DOTS NAVIGATION
+*******************************************************/
+
+.presentation-js-dots-navigation-container {
+    /* border: 20px solid pink; */
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    flex: wrap;
+}
+
+.presentation-js-navigation-dot {
+    color: white;
+    height: 13px;
+    margin-left: 5px;
+    margin-right: 5px;
 }

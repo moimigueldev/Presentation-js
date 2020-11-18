@@ -30,7 +30,11 @@ const setupPresentation = () => {
       addClassToChildren(child);
       addNavigationSVGs(child);
     } else {
-      container.removeChild(child);
+      if (
+        child.classList.value !== 'presentation-js-dots-navigation-container'
+      ) {
+        container.removeChild(child);
+      }
     }
   }
 };
