@@ -5,6 +5,8 @@ import {
   addClassToChildren,
 } from './functions/navigation';
 
+import { startDotsNavigation } from './functions/dotsNavigation';
+
 import { presentationContainer } from '../modules/variables/container';
 
 let container = undefined;
@@ -17,6 +19,7 @@ export function build() {
   startNavigation();
   setupPresentation();
   createScrollValues();
+  startDotsNavigation();
 }
 
 // MASTER LOOP TO SETUP PRESENTATION CAROUSEL
