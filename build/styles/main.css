@@ -54,12 +54,21 @@
     /* border: 20px solid pink; */
     position: absolute;
     z-index: 2;
-    display: flex;
-    flex: wrap;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    text-align: 0;
 }
 
 .presentation-js-navigation-dot {
-    color: white;
+    color: gray;
     height: 13px;
     margin-left: 5px;
     margin-right: 5px;
