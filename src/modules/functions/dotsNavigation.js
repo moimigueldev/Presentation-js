@@ -50,8 +50,25 @@ const generateDots = () => {
 };
 
 const setActiveClassOnDotsContainers = () => {
-  console.log(
-    'hello',
-    document.getElementsByClassName('presentation-js-dots-navigation-container')
+  const parent = document.getElementsByClassName(
+    'presentation-js-dots-navigation-container'
   );
+
+  for (let i = 0; i < parent.length; i++) {
+    const child = parent[i].children;
+    const currentSlide = i + 1;
+    console.log('slide', currentSlide);
+    for (let j = 0; j < child.length; j++) {
+      if (currentSlide === j + 1) {
+        // child[j].classList.add('active');
+        child[j].style.color = 'white';
+      } else {
+        child[j].style.color = 'gray';
+
+        // child[j].classList.remove('active');
+      }
+      // console.log('child', child[j].classList.remove('active'));
+    }
+    console.log('====================================');
+  }
 };
