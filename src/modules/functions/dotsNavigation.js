@@ -35,7 +35,6 @@ const setDotsContainer = () => {
 };
 
 const injectDots = () => {
-  const numOfChildren = container.children.length;
   for (let index = 0; index < container.children.length; index++) {
     const child = container.children[index];
     child.appendChild(dotsNavigationContainer.cloneNode(true));
@@ -60,15 +59,10 @@ const setActiveClassOnDotsContainers = () => {
     console.log('slide', currentSlide);
     for (let j = 0; j < child.length; j++) {
       if (currentSlide === j + 1) {
-        // child[j].classList.add('active');
         child[j].style.color = 'white';
       } else {
         child[j].style.color = 'gray';
-
-        // child[j].classList.remove('active');
       }
-      // console.log('child', child[j].classList.remove('active'));
     }
-    console.log('====================================');
   }
 };
