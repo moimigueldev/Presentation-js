@@ -10,7 +10,9 @@ module.exports = {
       babel({
         exclude: 'node_modules/**',
       }),
-      minify(),
+      minify({
+        comments: false,
+      }),
     ],
   },
 };

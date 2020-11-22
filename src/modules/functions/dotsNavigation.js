@@ -8,10 +8,13 @@ import {
 
 let container = undefined;
 
+const defaultDotsSize = '13px';
+
 export const startDotsNavigation = () => {
   if (!options.dots) {
     return false;
   }
+
   container = presentationContainer.element;
   dotsContainer.element = document.getEle;
 
@@ -19,6 +22,7 @@ export const startDotsNavigation = () => {
   generateDots();
   injectDots();
   setActiveClassOnDotsContainers();
+  setUserConfigs();
 };
 
 const setDotsContainer = () => {
@@ -56,13 +60,24 @@ const setActiveClassOnDotsContainers = () => {
   for (let i = 0; i < parent.length; i++) {
     const child = parent[i].children;
     const currentSlide = i + 1;
-    console.log('slide', currentSlide);
     for (let j = 0; j < child.length; j++) {
       if (currentSlide === j + 1) {
-        child[j].style.color = 'white';
+        child[j].style.color = options.activeDotColor;
       } else {
-        child[j].style.color = 'gray';
+        child[j].style.color = options.inactiveDotColor;
       }
     }
+  }
+};
+
+const setUserConfigs = () => {
+  console.log('options', options.activeDotColor);
+  const dots = document.getElementsByClassName(
+    'presentation-js-navigation-dot'
+  );
+  for (let i = 0; i < dots.length; i++) {
+    dots[i].style.height = options.dotsSize;
+    dots[i].style.height = options.dotsSize;
+    // dots[i].style.color = options.activeDotColor;
   }
 };

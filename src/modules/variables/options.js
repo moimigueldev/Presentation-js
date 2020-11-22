@@ -3,4 +3,7 @@ export const options = {
   arrows: true,
   autoSlide: true,
   dots: false,
+  dotsSize: '13px',
+  activeDotColor: 'white',
+  inactiveDotColor: 'gray',
 };
