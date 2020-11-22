@@ -25,7 +25,6 @@
 /* NAVIGATION */
 .presentation-navigation {
     height: 25px;
-    width: 25px;
     color: beige;
     cursor: pointer;
 }
@@ -51,7 +50,6 @@
 *******************************************************/
 
 .presentation-js-dots-navigation-container {
-    /* border: 1px solid pink; */
     position: absolute;
     z-index: 2;
     margin-left: auto;
@@ -72,8 +70,4 @@
     height: 13px;
     margin-left: 5px;
     margin-right: 5px;
-}
-
-.activeSlide {
-    color: white !important;
 }

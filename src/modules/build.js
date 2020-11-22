@@ -1,6 +1,5 @@
 import {
   addNavigationSVGs,
-  createScrollValues,
   startNavigation,
   addClassToChildren,
 } from './functions/navigation';
@@ -16,9 +15,8 @@ export function build() {
   container = presentationContainer.element;
 
   addClassToContainer();
-  startNavigation();
   setupPresentation();
-  createScrollValues();
+  startNavigation();
   startDotsNavigation();
 }
 

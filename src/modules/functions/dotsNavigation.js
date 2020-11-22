@@ -8,8 +8,6 @@ import {
 
 let container = undefined;
 
-const defaultDotsSize = '13px';
-
 export const startDotsNavigation = () => {
   if (!options.dots) {
     return false;
@@ -71,13 +69,11 @@ const setActiveClassOnDotsContainers = () => {
 };
 
 const setUserConfigs = () => {
-  console.log('options', options.activeDotColor);
   const dots = document.getElementsByClassName(
     'presentation-js-navigation-dot'
   );
   for (let i = 0; i < dots.length; i++) {
     dots[i].style.height = options.dotsSize;
     dots[i].style.height = options.dotsSize;
-    // dots[i].style.color = options.activeDotColor;
   }
 };

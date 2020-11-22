@@ -6,4 +6,6 @@ export const options = {
   dotsSize: '13px',
   activeDotColor: 'white',
   inactiveDotColor: 'gray',
+  arrowSize: '25px',
+  arrowColor: 'beige',
 };

@@ -5,6 +5,13 @@ import { presentationContainer } from '../variables/container';
 let slideIntervalSpeed = undefined;
 let masterContainer = undefined;
 
+export const startNavigation = () => {
+  masterContainer = presentationContainer.element;
+  startSlideInterval();
+  addEventListenersToNavigation();
+  setUserConfigs();
+};
+
 Element.prototype.insertChildAtIndex = function (child, index) {
   if (!index) index = 0;
   if (index >= this.children.length) {
@@ -98,22 +105,22 @@ export const addNavigationSVGs = (el) => {
   }
 };
 
-export const createScrollValues = () => {
-  addEventListenersToNavigation();
-};
-
 // ADDS CLASS TO CHILDREN TO CONTAIN IN CAROUSEL
 export const addClassToChildren = (el) => {
   el.classList.add('container-child');
-};
-
-export const startNavigation = () => {
-  masterContainer = presentationContainer.element;
-  startSlideInterval();
 };
 
 const startSlideInterval = () => {
   slideIntervalSpeed = setInterval(() => {
     goToNextSlide();
   }, options.timer);
+};
+
+const setUserConfigs = () => {
+  console.log(options);
+  const arrows = document.getElementsByClassName('presentation-navigation');
+  for (let i = 0; i < arrows.length; i++) {
+    arrows[i].style.height = options.arrowSize;
+    arrows[i].style.color = options.arrowColor;
+  }
 };
