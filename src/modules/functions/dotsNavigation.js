@@ -1,6 +1,10 @@
 import { options } from '../variables/options';
 import { presentationContainer } from '../variables/container';
-import { dotsContainer } from '../variables/dots';
+import {
+  dotsContainer,
+  dotsNavigationContainer,
+  dotSVG,
+} from '../variables/dots';
 
 let container = undefined;
 
@@ -10,8 +14,11 @@ export const startDotsNavigation = () => {
   }
   container = presentationContainer.element;
   dotsContainer.element = document.getEle;
+
   setDotsContainer();
-  positionContainer();
+  generateDots();
+  injectDots();
+  setActiveClassOnDotsContainers();
 };
 
 const setDotsContainer = () => {
@@ -27,10 +34,24 @@ const setDotsContainer = () => {
   }
 };
 
-const positionContainer = () => {
-  const height = container.offsetHeight;
-  const width = container.offsetWidth;
-  dotsContainer.element.style.marginTop = `${height * 0.9}px`;
-  dotsContainer.element.style.marginLeft = `${width / 4}px`;
-  console.log('dotsContainer', height);
+const injectDots = () => {
+  const numOfChildren = container.children.length;
+  for (let index = 0; index < container.children.length; index++) {
+    const child = container.children[index];
+    child.appendChild(dotsNavigationContainer.cloneNode(true));
+  }
+};
+
+const generateDots = () => {
+  const numOfChildren = container.children.length;
+  for (let index = 0; index < numOfChildren; index++) {
+    dotsNavigationContainer.appendChild(dotSVG.cloneNode(true));
+  }
+};
+
+const setActiveClassOnDotsContainers = () => {
+  console.log(
+    'hello',
+    document.getElementsByClassName('presentation-js-dots-navigation-container')
+  );
 };

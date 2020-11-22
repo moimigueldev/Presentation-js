@@ -51,7 +51,7 @@
 *******************************************************/
 
 .presentation-js-dots-navigation-container {
-    /* border: 20px solid pink; */
+    border: 1px solid pink;
     position: absolute;
     z-index: 2;
     margin-left: auto;
@@ -72,4 +72,8 @@
     height: 13px;
     margin-left: 5px;
     margin-right: 5px;
+}
+
+.activeSlide {
+    color: white;
 }
