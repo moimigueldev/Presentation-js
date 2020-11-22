@@ -47,6 +47,8 @@ const generateDots = () => {
   const numOfChildren = container.children.length;
   for (let index = 0; index < numOfChildren; index++) {
     const dot = dotSVG;
+    dot.setAttribute('slide', index + 1);
+
     dotsNavigationContainer.appendChild(dot.cloneNode(true));
   }
 };
@@ -76,5 +78,12 @@ const setUserConfigs = () => {
   for (let i = 0; i < dots.length; i++) {
     dots[i].style.height = options.dotsSize;
     dots[i].style.height = options.dotsSize;
+    dots[i].addEventListener('click', () => {
+      goToSlide(dots[i]);
+    });
   }
+};
+
+const goToSlide = (el) => {
+  console.log('clicked', el.getAttribute('slide'));
 };

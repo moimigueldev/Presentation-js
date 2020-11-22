@@ -17,3 +17,5 @@ export const backward = htmlToElement(`<div class="presentation-back-arrow-conta
         clip-rule="evenodd"></path>
 </svg>
 </div>`);
+
+export const activeSlide = { slide: 1 };

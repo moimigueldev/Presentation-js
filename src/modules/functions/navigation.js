@@ -1,4 +1,4 @@
-import { forward, backward } from '../variables/navigation';
+import { forward, backward, activeSlide } from '../variables/navigation';
 import { options } from '../variables/options';
 import { presentationContainer } from '../variables/container';
 
@@ -43,6 +43,8 @@ export const addEventListenersToNavigation = () => {
 
 // FORWARD
 const goToNextSlide = () => {
+  setActiveSlide('next');
+  console.log('active', activeSlide.slide);
   clearInterval(slideIntervalSpeed);
   masterContainer.scrollLeft += masterContainer.clientWidth;
   masterContainer.style.scrollBehavior = 'auto';
@@ -59,6 +61,8 @@ const goToNextSlide = () => {
 
 // BACKWARD
 const goToPrevSlide = () => {
+  setActiveSlide('prev');
+
   clearInterval(slideIntervalSpeed);
 
   if (masterContainer.scrollLeft === 0) {
@@ -122,4 +126,18 @@ const setUserConfigs = () => {
     arrows[i].style.height = options.arrowSize;
     arrows[i].style.color = options.arrowColor;
   }
+};
+
+export const setActiveSlide = (action) => {
+  const containerChildLength = masterContainer.children.length;
+
+  if (action === 'next') {
+    activeSlide.slide =
+      activeSlide.slide === containerChildLength ? 1 : activeSlide.slide + 1;
+  } else {
+    activeSlide.slide =
+      activeSlide.slide === 1 ? containerChildLength : activeSlide.slide - 1;
+  }
+
+  console.log('activeSlide', activeSlide.slide);
 };
