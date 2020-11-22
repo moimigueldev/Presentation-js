@@ -7,9 +7,9 @@
     position: relative;
 }
 
-.presentation-js-setup::-webkit-scrollbar {
+/* .presentation-js-setup::-webkit-scrollbar {
     display: none;
-}
+} */
 
 .container-child {
     display: inline-block;

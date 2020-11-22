@@ -1,5 +1,7 @@
 import { options } from '../variables/options';
 import { presentationContainer } from '../variables/container';
+import { activeSlide, backward } from '../variables/navigation';
+import { goToNextSlide, goToPrevSlide } from './navigation';
 import {
   dotsContainer,
   dotsNavigationContainer,
@@ -43,7 +45,7 @@ const injectDots = () => {
   }
 };
 
-const generateDots = () => {
+export const generateDots = () => {
   const numOfChildren = container.children.length;
   for (let index = 0; index < numOfChildren; index++) {
     const dot = dotSVG;
@@ -85,5 +87,35 @@ const setUserConfigs = () => {
 };
 
 const goToSlide = (el) => {
-  console.log('clicked', el.getAttribute('slide'));
+  const currentSlide = +el.getAttribute('slide');
+  console.log('clicked', currentSlide);
+
+  if (activeSlide.slide === currentSlide) return false;
+
+  if (currentSlide > activeSlide.slide) {
+    goToNextSlide();
+    return goToSlide(el);
+  } else {
+    goToPrevSlide();
+    return goToSlide(el);
+  }
+};
+
+export const reAttachEventListenersToDots = () => {
+  const lastChild = container.children[container.children.length - 1];
+
+  for (let i = 0; i < lastChild.children.length; i++) {
+    if (
+      lastChild.children[i].classList.contains(
+        'presentation-js-dots-navigation-container'
+      )
+    ) {
+      const dotsContainer = lastChild.children[i];
+      for (let j = 0; j < dotsContainer.children.length; j++) {
+        dotsContainer.children[j].addEventListener('click', () =>
+          goToSlide(dotsContainer.children[j])
+        );
+      }
+    }
+  }
 };

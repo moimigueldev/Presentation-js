@@ -1,6 +1,7 @@
 import { forward, backward, activeSlide } from '../variables/navigation';
 import { options } from '../variables/options';
 import { presentationContainer } from '../variables/container';
+import { reAttachEventListenersToDots } from './dotsNavigation';
 
 let slideIntervalSpeed = undefined;
 let masterContainer = undefined;
@@ -42,9 +43,8 @@ export const addEventListenersToNavigation = () => {
 };
 
 // FORWARD
-const goToNextSlide = () => {
-  setActiveSlide('next');
-  console.log('active', activeSlide.slide);
+export const goToNextSlide = () => {
+  setActiveSlide();
   clearInterval(slideIntervalSpeed);
   masterContainer.scrollLeft += masterContainer.clientWidth;
   masterContainer.style.scrollBehavior = 'auto';
@@ -55,13 +55,14 @@ const goToNextSlide = () => {
     masterContainer.removeChild(masterContainer.children[0]);
     masterContainer.scrollLeft = 0;
     masterContainer.style.scrollBehavior = 'smooth';
+    reAttachEventListenersToDots('next');
   }, 600);
   options.autoSlide ? startSlideInterval() : false;
 };
 
 // BACKWARD
-const goToPrevSlide = () => {
-  setActiveSlide('prev');
+export const goToPrevSlide = () => {
+  setActiveSlide();
 
   clearInterval(slideIntervalSpeed);
 
@@ -76,6 +77,7 @@ const goToPrevSlide = () => {
 
   masterContainer.scrollLeft -= masterContainer.clientWidth;
   options.autoSlide ? startSlideInterval() : false;
+  reAttachEventListenersToDots('next');
 };
 
 const reAttachEventListeners = () => {
@@ -138,6 +140,4 @@ export const setActiveSlide = (action) => {
     activeSlide.slide =
       activeSlide.slide === 1 ? containerChildLength : activeSlide.slide - 1;
   }
-
-  console.log('activeSlide', activeSlide.slide);
 };
