@@ -7,7 +7,7 @@ let masterContainer = undefined;
 
 export const startNavigation = () => {
   masterContainer = presentationContainer.element;
-  startSlideInterval();
+  options.autoSlide ? startSlideInterval() : false;
   addEventListenersToNavigation();
   setUserConfigs();
 };
@@ -54,7 +54,7 @@ const goToNextSlide = () => {
     masterContainer.scrollLeft = 0;
     masterContainer.style.scrollBehavior = 'smooth';
   }, 600);
-  startSlideInterval();
+  options.autoSlide ? startSlideInterval() : false;
 };
 
 // BACKWARD
@@ -71,7 +71,7 @@ const goToPrevSlide = () => {
   }
 
   masterContainer.scrollLeft -= masterContainer.clientWidth;
-  startSlideInterval();
+  options.autoSlide ? startSlideInterval() : false;
 };
 
 const reAttachEventListeners = () => {
@@ -117,7 +117,6 @@ const startSlideInterval = () => {
 };
 
 const setUserConfigs = () => {
-  console.log(options);
   const arrows = document.getElementsByClassName('presentation-navigation');
   for (let i = 0; i < arrows.length; i++) {
     arrows[i].style.height = options.arrowSize;

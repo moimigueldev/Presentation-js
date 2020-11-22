@@ -46,7 +46,8 @@ const injectDots = () => {
 const generateDots = () => {
   const numOfChildren = container.children.length;
   for (let index = 0; index < numOfChildren; index++) {
-    dotsNavigationContainer.appendChild(dotSVG.cloneNode(true));
+    const dot = dotSVG;
+    dotsNavigationContainer.appendChild(dot.cloneNode(true));
   }
 };
 
