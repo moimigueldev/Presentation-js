@@ -1,7 +1,7 @@
 import { options } from '../variables/options';
 import { presentationContainer } from '../variables/container';
-import { activeSlide, backward } from '../variables/navigation';
-import { goToNextSlide, goToPrevSlide } from './navigation';
+import { activeSlide } from '../variables/navigation';
+import { goToNextSlide, goToPrevSlide, setActiveSlide } from './navigation';
 import {
   dotsContainer,
   dotsNavigationContainer,
@@ -88,7 +88,6 @@ const setUserConfigs = () => {
 
 const goToSlide = (el) => {
   const currentSlide = +el.getAttribute('slide');
-  console.log('clicked', currentSlide);
 
   if (activeSlide.slide === currentSlide) return false;
 
@@ -97,6 +96,7 @@ const goToSlide = (el) => {
     return goToSlide(el);
   } else {
     goToPrevSlide();
+
     return goToSlide(el);
   }
 };

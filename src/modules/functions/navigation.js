@@ -44,7 +44,7 @@ export const addEventListenersToNavigation = () => {
 
 // FORWARD
 export const goToNextSlide = () => {
-  setActiveSlide();
+  setActiveSlide('next');
   clearInterval(slideIntervalSpeed);
   masterContainer.scrollLeft += masterContainer.clientWidth;
   masterContainer.style.scrollBehavior = 'auto';
@@ -62,7 +62,7 @@ export const goToNextSlide = () => {
 
 // BACKWARD
 export const goToPrevSlide = () => {
-  setActiveSlide();
+  setActiveSlide('prev');
 
   clearInterval(slideIntervalSpeed);
 
@@ -131,6 +131,7 @@ const setUserConfigs = () => {
 };
 
 export const setActiveSlide = (action) => {
+  console.log('settings');
   const containerChildLength = masterContainer.children.length;
 
   if (action === 'next') {
@@ -140,4 +141,6 @@ export const setActiveSlide = (action) => {
     activeSlide.slide =
       activeSlide.slide === 1 ? containerChildLength : activeSlide.slide - 1;
   }
+
+  console.log('active slide', activeSlide.slide);
 };
