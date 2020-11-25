@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <div class="presentation-container" id="presentation-container" presentation-js>
+    <div class="presentation-container" presentation-js tabindex="1">
 
         <div data-slide="1" style="background-image: url('./build/images/slide-1.jpg'); height: 800px">
         </div>
@@ -31,7 +31,7 @@
     <script src="build/bundle.js"></script>
 
     <script>
-        presentation.start({ dots: true, arrows: true, timer: 6000, autoSlide: false })
+        presentation.start({ dots: true, arrows: true, timer: 6000, autoSlide: false, })
     </script>
 </body>
 

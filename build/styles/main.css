@@ -7,9 +7,13 @@
     position: relative;
 }
 
-/* .presentation-js-setup::-webkit-scrollbar {
+.presentation-js-setup:focus {
+    outline: none;
+}
+
+.presentation-js-setup::-webkit-scrollbar {
     display: none;
-} */
+}
 
 .container-child {
     display: inline-block;
@@ -71,5 +75,5 @@
     height: 13px;
     margin-left: 5px;
     margin-right: 5px;
-    /* cursor: pointer; */
+    cursor: pointer;
 }

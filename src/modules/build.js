@@ -8,6 +8,8 @@ import { startDotsNavigation } from './functions/dotsNavigation';
 
 import { presentationContainer } from '../modules/variables/container';
 
+import * as checkKeyPress from './functions/keyNavigation';
+
 let container = undefined;
 
 // MASTER FUNCTION TO CREATE PRESETATION
