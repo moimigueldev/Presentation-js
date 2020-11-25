@@ -43,20 +43,27 @@ export const addEventListenersToNavigation = () => {
 };
 
 // FORWARD
-export const goToNextSlide = () => {
+/*
+  timer parameter is there to make sure
+  the slide does not animate when the user uses the dots navigation
+*/
+export const goToNextSlide = (timer) => {
   setActiveSlide('next');
   clearInterval(slideIntervalSpeed);
   masterContainer.scrollLeft += masterContainer.clientWidth;
   masterContainer.style.scrollBehavior = 'auto';
 
-  setTimeout(() => {
-    masterContainer.appendChild(masterContainer.children[0].cloneNode(true));
-    reAttachEventListeners();
-    masterContainer.removeChild(masterContainer.children[0]);
-    masterContainer.scrollLeft = 0;
-    masterContainer.style.scrollBehavior = 'smooth';
-    reAttachEventListenersToDots('next');
-  }, 600);
+  setTimeout(
+    () => {
+      masterContainer.appendChild(masterContainer.children[0].cloneNode(true));
+      reAttachEventListeners();
+      masterContainer.removeChild(masterContainer.children[0]);
+      masterContainer.scrollLeft = 0;
+      masterContainer.style.scrollBehavior = 'smooth';
+      reAttachEventListenersToDots('next');
+    },
+    timer ? timer : 600
+  );
   options.autoSlide ? startSlideInterval() : false;
 };
 
@@ -131,7 +138,6 @@ const setUserConfigs = () => {
 };
 
 export const setActiveSlide = (action) => {
-  console.log('settings');
   const containerChildLength = masterContainer.children.length;
 
   if (action === 'next') {
@@ -141,6 +147,4 @@ export const setActiveSlide = (action) => {
     activeSlide.slide =
       activeSlide.slide === 1 ? containerChildLength : activeSlide.slide - 1;
   }
-
-  console.log('active slide', activeSlide.slide);
 };

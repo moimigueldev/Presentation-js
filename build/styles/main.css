@@ -28,6 +28,7 @@
     color: beige;
     cursor: pointer;
 }
+
 /* BACK ARROW */
 .presentation-back-arrow-container {
     position: absolute;
@@ -70,4 +71,5 @@
     height: 13px;
     margin-left: 5px;
     margin-right: 5px;
+    /* cursor: pointer; */
 }
