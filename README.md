@@ -51,3 +51,15 @@ presentation.start('presentation', {
 
 these are the current default parameters that presentation-js will run off of unless changed by the user itself.
 _Keep in mind that when changing parameter, the value types need to be the same as the defaults_ or else you will see a type error from presentation-js
+
+# Running the applcation
+
+To run the application you will need to run
+
+```
+ npm start
+```
+
+this will watch for any changes to files and run the babel and rollup
+
+you will need to open the index.html file via folder explorer to view the application
