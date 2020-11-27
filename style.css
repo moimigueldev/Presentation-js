@@ -1,3 +1,33 @@
 .presentation-container {
     margin: 100px auto;
+    height: 800px;
+    width: 60%;
+}
+
+.testimonials-container {
+    margin: 100px auto;
+    height: 300px;
+    width: 60%;
+
+    background-color: gray;
+    color: white;
+}
+
+.slide-container {
+    background-color: rgb(92, 92, 92);
+    border: 2px solid blue;
+    padding: 70px;
+    height: 100%;
+    margin: 10px;
+}
+
+/*******************************************************
+                MEDIA QUERY
+*************** ****************************************/
+
+/* Media query for medium size laptops */
+@media only screen and (min-width: 1280px) and (max-height: 900px) {
+    .presentation-container {
+        height: 400px;
+    }
 }
