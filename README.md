@@ -23,17 +23,31 @@ please provide the style and script tag to your application
 
 ### Usage
 
-To be able to run Presentation-js you will need to provide a container with an id of _presentation_
-The container can only have children of divs with a background-image provided and height
+To be able to run Presentation-js you will need to provide a container with an attribute of _presentation-js_
+The container can only have children of divs with a background-image/text provided and height
 The divs will take the entire width of it's containers
 You will need to provide a _data-slide_ attribute the the children of the container. _example can be found on the index.html page_
 to initialize the container. You will need to provide `presentation.start()` function
 
 #### presentation.start()
 
-This function takes in two parameters. The first will be the id of the container. and the second will be the options _the options parameter is optional_
+## Configuration
+
+This function takes in one optional parameter. The parameter is the object to which you can provide presentation-js with configurations to the carousel.
 
 ```
-presentation.start('presentation', { arrows: true, timer: 3000, autoSlide: true })
-
+presentation.start('presentation', {
+  timer: 6000,
+  arrows: true,
+  autoSlide: true,
+  dots: false,
+  dotsSize: '13px',
+  activeDotColor: 'white',
+  inactiveDotColor: 'gray',
+  arrowSize: '25px',
+  arrowColor: 'beige'
+  })
 ```
+
+these are the current default parameters that presentation-js will run off of unless changed by the user itself.
+_Keep in mind that when changing parameter, the value types need to be the same as the defaults_ or else you will see a type error from presentation-js
