@@ -8,6 +8,7 @@ import { startDotsNavigation } from './functions/dotsNavigation';
 
 import { presentationContainer } from '../modules/variables/container';
 
+// this file needs to stay here imported.
 import * as checkKeyPress from './functions/keyNavigation';
 
 let container = undefined;
@@ -17,6 +18,7 @@ export function build() {
   container = presentationContainer.element;
 
   addClassToContainer();
+  addFocusToContainer();
   setupPresentation();
   startNavigation();
   startDotsNavigation();
@@ -39,6 +41,7 @@ const setupPresentation = () => {
   }
 };
 
-const addClassToContainer = () => {
+const addClassToContainer = () =>
   container.classList.add('presentation-js-setup');
-};
+
+const addFocusToContainer = () => container.setAttribute('tabindex', 1);
