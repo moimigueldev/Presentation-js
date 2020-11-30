@@ -1,7 +1,6 @@
 import { forward, backward, activeSlide } from '../variables/navigation';
 import { options } from '../variables/options';
 import { presentationContainer } from '../variables/container';
-import { reAttachEventListenersToDots } from './dotsNavigation';
 
 let slideIntervalSpeed = undefined;
 let masterContainer = undefined;
@@ -43,10 +42,7 @@ export const addEventListenersToNavigation = () => {
 };
 
 // FORWARD
-/*
-  timer parameter is there to make sure
-  the slide does not animate when the user uses the dots navigation
-*/
+
 export const goToNextSlide = () => {
   activeSlide.slide++;
   if (activeSlide.slide > masterContainer.children.length) {
@@ -55,25 +51,6 @@ export const goToNextSlide = () => {
   const query = `[data-slide*="${activeSlide.slide}"]`;
   document.querySelector(query).scrollIntoView(true);
 };
-// export const goToNextSlide = (timer) => {
-//   setActiveSlide('next');
-//   clearInterval(slideIntervalSpeed);
-//   masterContainer.scrollLeft += masterContainer.clientWidth;
-//   masterContainer.style.scrollBehavior = 'auto';
-
-//   setTimeout(
-//     () => {
-//       masterContainer.appendChild(masterContainer.children[0].cloneNode(true));
-//       reAttachEventListeners();
-//       masterContainer.removeChild(masterContainer.children[0]);
-//       masterContainer.scrollLeft = 0;
-//       masterContainer.style.scrollBehavior = 'smooth';
-//       reAttachEventListenersToDots('next');
-//     },
-//     timer ? timer : 600
-//   );
-//   options.autoSlide ? startSlideInterval() : false;
-// };
 
 // BACKWARD
 export const goToPrevSlide = () => {
@@ -83,48 +60,6 @@ export const goToPrevSlide = () => {
   }
   const query = `[data-slide*="${activeSlide.slide}"]`;
   document.querySelector(query).scrollIntoView(true);
-};
-// // BACKWARD
-// export const goToPrevSlide = () => {
-//   setActiveSlide('prev');
-
-//   clearInterval(slideIntervalSpeed);
-
-//   if (masterContainer.scrollLeft === 0) {
-//     masterContainer.prepend(
-//       masterContainer.children[masterContainer.children.length - 1]
-//     );
-//     masterContainer.style.scrollBehavior = 'auto';
-//     masterContainer.scrollLeft = masterContainer.clientWidth;
-//     masterContainer.style.scrollBehavior = 'smooth';
-//   }
-
-//   masterContainer.scrollLeft -= masterContainer.clientWidth;
-//   options.autoSlide ? startSlideInterval() : false;
-//   reAttachEventListenersToDots('next');
-// };
-
-const reAttachEventListeners = () => {
-  let lastChild = masterContainer.children[masterContainer.children.length - 1];
-  for (let index = 0; index < lastChild.children.length; index++) {
-    if (
-      lastChild.children[index].classList[0] ===
-      'presentation-forward-arrow-container'
-    ) {
-      lastChild.children[index].addEventListener('click', () => {
-        goToNextSlide();
-      });
-    }
-
-    if (
-      lastChild.children[index].classList[0] ===
-      'presentation-back-arrow-container'
-    ) {
-      lastChild.children[index].addEventListener('click', () => {
-        goToPrevSlide();
-      });
-    }
-  }
 };
 
 // ADDS NAVIGATION ICONS TO EACH SLIDE

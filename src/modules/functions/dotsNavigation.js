@@ -1,7 +1,6 @@
 import { options } from '../variables/options';
 import { presentationContainer } from '../variables/container';
 import { activeSlide } from '../variables/navigation';
-import { goToNextSlide, goToPrevSlide, setActiveSlide } from './navigation';
 import {
   dotsContainer,
   dotsNavigationContainer,
@@ -93,23 +92,4 @@ const goToSlide = (el) => {
   document.querySelector(query).scrollIntoView(true);
 
   activeSlide.slide = +elDataSlide;
-};
-
-export const reAttachEventListenersToDots = () => {
-  const lastChild = container.children[container.children.length - 1];
-
-  for (let i = 0; i < lastChild.children.length; i++) {
-    if (
-      lastChild.children[i].classList.contains(
-        'presentation-js-dots-navigation-container'
-      )
-    ) {
-      const dotsContainer = lastChild.children[i];
-      for (let j = 0; j < dotsContainer.children.length; j++) {
-        dotsContainer.children[j].addEventListener('click', () =>
-          goToSlide(dotsContainer.children[j])
-        );
-      }
-    }
-  }
 };

@@ -1,30 +1,19 @@
 import { presentationContainer } from '../variables/container';
 import { goToNextSlide, goToPrevSlide } from './navigation';
 
-// Matches the same amount of time it takes to transition
-let canTransition = true;
-
 window.onkeydown = (e) => {
-  e.preventDefault();
-
   // check for focus
   const isFocused = document.activeElement === presentationContainer.element;
 
   e = e || window.event;
 
-  if (isFocused && e.key === 'ArrowRight' && canTransition) {
+  if (isFocused && e.key === 'ArrowRight') {
+    e.preventDefault();
     goToNextSlide();
-    canTransition = false;
-    setTimeout(() => {
-      canTransition = true;
-    }, 0);
   }
 
-  if (isFocused && e.key === 'ArrowLeft' && canTransition) {
+  if (isFocused && e.key === 'ArrowLeft') {
+    e.preventDefault();
     goToPrevSlide();
-    canTransition = false;
-    setTimeout(() => {
-      canTransition = true;
-    }, 0);
   }
 };
