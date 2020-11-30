@@ -7,6 +7,8 @@ import {
   dotSVG,
 } from '../variables/dots';
 
+import { slideIntervalSpeed, startSlideInterval } from './navigation';
+
 let container = undefined;
 
 export const startDotsNavigation = () => {
@@ -86,10 +88,12 @@ const setUserConfigs = () => {
 };
 
 const goToSlide = (el) => {
+  clearInterval(slideIntervalSpeed);
   const elDataSlide = el.getAttribute('slide');
   const query = `[data-slide*="${elDataSlide}"]`;
 
   document.querySelector(query).scrollIntoView(true);
 
   activeSlide.slide = +elDataSlide;
+  startSlideInterval();
 };

@@ -2,7 +2,7 @@ import { forward, backward, activeSlide } from '../variables/navigation';
 import { options } from '../variables/options';
 import { presentationContainer } from '../variables/container';
 
-let slideIntervalSpeed = undefined;
+export let slideIntervalSpeed = undefined;
 let masterContainer = undefined;
 
 export const startNavigation = () => {
@@ -44,22 +44,26 @@ export const addEventListenersToNavigation = () => {
 // FORWARD
 
 export const goToNextSlide = () => {
+  clearInterval(slideIntervalSpeed);
   activeSlide.slide++;
   if (activeSlide.slide > masterContainer.children.length) {
     activeSlide.slide = 1;
   }
   const query = `[data-slide*="${activeSlide.slide}"]`;
   document.querySelector(query).scrollIntoView(true);
+  startSlideInterval();
 };
 
 // BACKWARD
 export const goToPrevSlide = () => {
+  clearInterval(slideIntervalSpeed);
   activeSlide.slide--;
   if (activeSlide.slide === 0) {
     activeSlide.slide = 6;
   }
   const query = `[data-slide*="${activeSlide.slide}"]`;
   document.querySelector(query).scrollIntoView(true);
+  startSlideInterval();
 };
 
 // ADDS NAVIGATION ICONS TO EACH SLIDE
@@ -75,7 +79,7 @@ export const addClassToChildren = (el) => {
   el.classList.add('container-child');
 };
 
-const startSlideInterval = () => {
+export const startSlideInterval = () => {
   slideIntervalSpeed = setInterval(() => {
     goToNextSlide();
   }, options.timer);
