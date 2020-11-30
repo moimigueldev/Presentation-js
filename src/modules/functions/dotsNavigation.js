@@ -80,22 +80,32 @@ const setUserConfigs = () => {
   for (let i = 0; i < dots.length; i++) {
     dots[i].style.height = options.dotsSize;
     dots[i].style.height = options.dotsSize;
-    // dots[i].addEventListener('click', () => {
-    //   goToSlide(dots[i]);
-    // });
+    dots[i].addEventListener('click', () => {
+      goToSlide(dots[i]);
+    });
+  }
+};
+
+const callPrevSlide = (amount) => {
+  console.log('calling prev slide', amount);
+  if (amount === 0) {
+    console.log('dont run again');
+    return true;
+  } else {
+    goToPrevSlide();
+    amount--;
+    return callPrevSlide(amount);
   }
 };
 
 const goToSlide = (el, action) => {
-  const currentSlide = +el.getAttribute('slide');
+  const elDataSlide = el.getAttribute('slide');
+  const query = `[data-slide*="${elDataSlide}"]`;
+  console.log('element', query);
 
-  if (activeSlide.slide === currentSlide) {
-    console.log('ending with active slide of ', activeSlide.slide);
-    return false;
-  }
+  document.querySelector(query).scrollIntoView(true);
 
-  goToNextSlide(1);
-  return goToSlide(el);
+  activeSlide.slide = +elDataSlide;
 };
 
 export const reAttachEventListenersToDots = () => {

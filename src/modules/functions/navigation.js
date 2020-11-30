@@ -84,7 +84,7 @@ export const goToPrevSlide = () => {
 
   masterContainer.scrollLeft -= masterContainer.clientWidth;
   options.autoSlide ? startSlideInterval() : false;
-  // reAttachEventListenersToDots('next');
+  reAttachEventListenersToDots('next');
 };
 
 const reAttachEventListeners = () => {
