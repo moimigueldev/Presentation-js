@@ -76,3 +76,11 @@
     margin-right: 5px;
     cursor: pointer;
 }
+
+.presentation-js-active-dot {
+    color: #fff;
+}
+
+.presentation-js-navigation-dot:hover {
+    transform: scale(1.2);
+}
