@@ -86,22 +86,9 @@ const setUserConfigs = () => {
   }
 };
 
-const callPrevSlide = (amount) => {
-  console.log('calling prev slide', amount);
-  if (amount === 0) {
-    console.log('dont run again');
-    return true;
-  } else {
-    goToPrevSlide();
-    amount--;
-    return callPrevSlide(amount);
-  }
-};
-
-const goToSlide = (el, action) => {
+const goToSlide = (el) => {
   const elDataSlide = el.getAttribute('slide');
   const query = `[data-slide*="${elDataSlide}"]`;
-  console.log('element', query);
 
   document.querySelector(query).scrollIntoView(true);
 

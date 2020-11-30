@@ -17,7 +17,7 @@ window.onkeydown = (e) => {
     canTransition = false;
     setTimeout(() => {
       canTransition = true;
-    }, 600);
+    }, 0);
   }
 
   if (isFocused && e.key === 'ArrowLeft' && canTransition) {
@@ -25,6 +25,6 @@ window.onkeydown = (e) => {
     canTransition = false;
     setTimeout(() => {
       canTransition = true;
-    }, 600);
+    }, 0);
   }
 };
