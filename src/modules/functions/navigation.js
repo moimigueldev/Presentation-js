@@ -41,22 +41,22 @@ export const addEventListenersToNavigation = () => {
   }
 };
 
-// FORWARD
+const appendChild = (child) => {};
 
+// FORWARD
 export const goToNextSlide = () => {
   clearInterval(slideIntervalSpeed);
   activeSlide.slide++;
   if (activeSlide.slide > masterContainer.children.length) {
     activeSlide.slide--;
-    const newChild = masterContainer.children[0].cloneNode(true);
-    newChild.dataset.slide = 'new';
-    console.log('newCHild', newChild.dataset.slide);
-    masterContainer.appendChild(newChild);
+    const tempChild = masterContainer.children[0].cloneNode(true);
+    tempChild.dataset.slide = 'new';
+    masterContainer.appendChild(tempChild);
     masterContainer.scrollLeft += masterContainer.clientWidth;
     masterContainer.style.scrollBehavior = 'auto';
     setTimeout(() => {
       masterContainer.scrollLeft = 0;
-      masterContainer.removeChild(newChild);
+      masterContainer.removeChild(tempChild);
       masterContainer.style.scrollBehavior = 'smooth';
     }, 600);
     activeSlide.slide = 1;
@@ -72,11 +72,32 @@ export const goToPrevSlide = () => {
   clearInterval(slideIntervalSpeed);
   activeSlide.slide--;
   if (activeSlide.slide === 0) {
-    activeSlide.slide = 6;
+    // activeSlide.slide = 6;
+    console.log('not doing anything');
+    const tempChild = masterContainer.children[
+      masterContainer.children.length - 1
+    ].cloneNode(true);
+    masterContainer.style.scrollBehavior = 'auto';
+    console.log('tempChild', tempChild);
+
+    masterContainer.prepend(tempChild);
+    masterContainer.scrollLeft += masterContainer.clientWidth;
+    masterContainer.style.scrollBehavior = 'smooth';
+    masterContainer.scrollLeft = 0;
+
+    setTimeout(() => {
+      masterContainer.removeChild(tempChild);
+      masterContainer.style.scrollBehavior = 'auto';
+      masterContainer.scrollLeft +=
+        masterContainer.clientWidth * masterContainer.children.length;
+      masterContainer.style.scrollBehavior = 'smooth';
+    }, 300);
+    activeSlide.slide = masterContainer.children.length;
+  } else {
+    const query = `[data-slide*="${activeSlide.slide}"]`;
+    document.querySelector(query).scrollIntoView(true);
+    startSlideInterval();
   }
-  const query = `[data-slide*="${activeSlide.slide}"]`;
-  document.querySelector(query).scrollIntoView(true);
-  startSlideInterval();
 };
 
 // ADDS NAVIGATION ICONS TO EACH SLIDE
