@@ -76,7 +76,7 @@ export const goToNextSlide = () => {
       masterContainer.scrollLeft = 0;
       masterContainer.removeChild(tempChild);
       changeScrollBehavior('smooth');
-    }, 350);
+    }, 600);
 
     activeSlide.slide = 1;
   } else {
@@ -103,7 +103,7 @@ export const goToPrevSlide = () => {
       changeScrollBehavior('auto');
       scrollIntoView(`[data-slide*="${masterContainer.children.length}"]`);
       changeScrollBehavior('smooth');
-    }, 400);
+    }, 600);
 
     activeSlide.slide = masterContainer.children.length;
   } else {
