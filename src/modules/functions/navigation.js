@@ -41,28 +41,46 @@ export const addEventListenersToNavigation = () => {
   }
 };
 
-const appendChild = (child) => {};
+const changeScrollBehavior = (behavior) => {
+  masterContainer.style.scrollBehavior = behavior;
+};
+
+const createChild = (position) => {
+  if (position === 'first') {
+    return masterContainer.children[0].cloneNode(true);
+  }
+
+  return masterContainer.children[
+    masterContainer.children.length - 1
+  ].cloneNode(true);
+};
+
+const scrollIntoView = (query) => {
+  document.querySelector(query).scrollIntoView(true);
+};
 
 // FORWARD
 export const goToNextSlide = () => {
   clearInterval(slideIntervalSpeed);
   activeSlide.slide++;
+
   if (activeSlide.slide > masterContainer.children.length) {
     activeSlide.slide--;
-    const tempChild = masterContainer.children[0].cloneNode(true);
-    tempChild.dataset.slide = 'new';
+
+    const tempChild = createChild('first');
     masterContainer.appendChild(tempChild);
     masterContainer.scrollLeft += masterContainer.clientWidth;
-    masterContainer.style.scrollBehavior = 'auto';
+    changeScrollBehavior('auto');
+
     setTimeout(() => {
       masterContainer.scrollLeft = 0;
       masterContainer.removeChild(tempChild);
-      masterContainer.style.scrollBehavior = 'smooth';
-    }, 600);
+      changeScrollBehavior('smooth');
+    }, 350);
+
     activeSlide.slide = 1;
   } else {
-    const query = `[data-slide*="${activeSlide.slide}"]`;
-    document.querySelector(query).scrollIntoView(true);
+    scrollIntoView(`[data-slide*="${activeSlide.slide}"]`);
     startSlideInterval();
   }
 };
@@ -71,31 +89,25 @@ export const goToNextSlide = () => {
 export const goToPrevSlide = () => {
   clearInterval(slideIntervalSpeed);
   activeSlide.slide--;
-  if (activeSlide.slide === 0) {
-    // activeSlide.slide = 6;
-    console.log('not doing anything');
-    const tempChild = masterContainer.children[
-      masterContainer.children.length - 1
-    ].cloneNode(true);
-    masterContainer.style.scrollBehavior = 'auto';
-    console.log('tempChild', tempChild);
 
+  if (activeSlide.slide === 0) {
+    const tempChild = createChild('last');
+    changeScrollBehavior('auto');
     masterContainer.prepend(tempChild);
     masterContainer.scrollLeft += masterContainer.clientWidth;
-    masterContainer.style.scrollBehavior = 'smooth';
+    changeScrollBehavior('smooth');
     masterContainer.scrollLeft = 0;
 
     setTimeout(() => {
       masterContainer.removeChild(tempChild);
-      masterContainer.style.scrollBehavior = 'auto';
-      masterContainer.scrollLeft +=
-        masterContainer.clientWidth * masterContainer.children.length;
-      masterContainer.style.scrollBehavior = 'smooth';
-    }, 300);
+      changeScrollBehavior('auto');
+      scrollIntoView(`[data-slide*="${masterContainer.children.length}"]`);
+      changeScrollBehavior('smooth');
+    }, 400);
+
     activeSlide.slide = masterContainer.children.length;
   } else {
-    const query = `[data-slide*="${activeSlide.slide}"]`;
-    document.querySelector(query).scrollIntoView(true);
+    scrollIntoView(`[data-slide*="${activeSlide.slide}"]`);
     startSlideInterval();
   }
 };

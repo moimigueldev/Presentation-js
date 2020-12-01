@@ -5,10 +5,10 @@
     scroll-behavior: smooth;
     position: relative;
 }
-
+/* 
 .presentation-js-setup:focus {
     outline: none;
-}
+} */
 
 .presentation-js-setup::-webkit-scrollbar {
     display: none;
