@@ -47,11 +47,24 @@ export const goToNextSlide = () => {
   clearInterval(slideIntervalSpeed);
   activeSlide.slide++;
   if (activeSlide.slide > masterContainer.children.length) {
+    activeSlide.slide--;
+    const newChild = masterContainer.children[0].cloneNode(true);
+    newChild.dataset.slide = 'new';
+    console.log('newCHild', newChild.dataset.slide);
+    masterContainer.appendChild(newChild);
+    masterContainer.scrollLeft += masterContainer.clientWidth;
+    masterContainer.style.scrollBehavior = 'auto';
+    setTimeout(() => {
+      masterContainer.scrollLeft = 0;
+      masterContainer.removeChild(newChild);
+      masterContainer.style.scrollBehavior = 'smooth';
+    }, 600);
     activeSlide.slide = 1;
+  } else {
+    const query = `[data-slide*="${activeSlide.slide}"]`;
+    document.querySelector(query).scrollIntoView(true);
+    startSlideInterval();
   }
-  const query = `[data-slide*="${activeSlide.slide}"]`;
-  document.querySelector(query).scrollIntoView(true);
-  startSlideInterval();
 };
 
 // BACKWARD
@@ -80,9 +93,11 @@ export const addClassToChildren = (el) => {
 };
 
 export const startSlideInterval = () => {
-  slideIntervalSpeed = setInterval(() => {
-    goToNextSlide();
-  }, options.timer);
+  if (options.autoSlide) {
+    slideIntervalSpeed = setInterval(() => {
+      gotToNextSlide();
+    }, options.timer);
+  }
 };
 
 const setUserConfigs = () => {
