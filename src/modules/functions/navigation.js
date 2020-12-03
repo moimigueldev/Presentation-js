@@ -128,7 +128,7 @@ export const addClassToChildren = (el) => {
 export const startSlideInterval = () => {
   if (options.autoSlide) {
     slideIntervalSpeed = setInterval(() => {
-      gotToNextSlide();
+      goToNextSlide();
     }, options.timer);
   }
 };

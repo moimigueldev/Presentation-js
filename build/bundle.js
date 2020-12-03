@@ -1,20 +1,390 @@
-var presentation=function(a){'use strict';function b(a){var b=document.createElement("template");return a=a.trim(),b.innerHTML=a,b.content.firstChild}function c(){H=i.element,J(),K(),I(),l(),A()}const d=a=>{const b=document.createElement("template");return a=a.trim(),b.innerHTML=a,b.content.firstChild},e=d(`<div class="presentation-forward-arrow-container">
+var presentation = (function (exports) {
+  'use strict';
+
+  const htmlToElement = (html) => {
+    const template = document.createElement('template');
+    html = html.trim();
+    template.innerHTML = html;
+    return template.content.firstChild;
+  };
+
+  const forward = htmlToElement(`<div class="presentation-forward-arrow-container">
 <svg class="presentation-navigation presentation-forward" fill="currentColor" viewBox="0 0 20 20"
     xmlns="http://www.w3.org/2000/svg">
     <path fill-rule="evenodd"
         d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z"
         clip-rule="evenodd"></path>
 </svg>
-</div>`),f=d(`<div class="presentation-back-arrow-container">
+</div>`);
+
+  const backward = htmlToElement(`<div class="presentation-back-arrow-container">
 <svg class="presentation-navigation presentation-back" fill="currentColor" viewBox="0 0 20 20"
     xmlns="http://www.w3.org/2000/svg">
     <path fill-rule="evenodd"
         d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L9.414 11H13a1 1 0 100-2H9.414l1.293-1.293z"
         clip-rule="evenodd"></path>
 </svg>
-</div>`),g={slide:1},h={timer:6e3,arrows:!0,autoSlide:!0,dots:!1,dotsSize:"13px",activeDotColor:"white",inactiveDotColor:"gray",arrowSize:"25px",arrowColor:"beige"},i={element:void 0};let j,k;const l=()=>{k=i.element,!h.autoSlide||u(),m(),v()};Element.prototype.insertChildAtIndex=function(a,b){b||(b=0),b>=this.children.length?this.appendChild(a):this.insertBefore(a,this.children[b])};const m=()=>{const a=document.getElementsByClassName("presentation-forward-arrow-container"),b=document.getElementsByClassName("presentation-back-arrow-container");for(let c=0;c<a.length;c++)a[c].addEventListener("click",()=>{q()}),b[c].addEventListener("click",()=>{r()})},n=a=>{k.style.scrollBehavior=a},o=a=>"first"===a?k.children[0].cloneNode(!0):k.children[k.children.length-1].cloneNode(!0),p=a=>{document.querySelector(a).scrollIntoView(!0)},q=()=>{if(clearInterval(j),g.slide++,g.slide>k.children.length){g.slide--;const a=o("first");k.appendChild(a),k.scrollLeft+=k.clientWidth,n("auto"),setTimeout(()=>{k.scrollLeft=0,k.removeChild(a),n("smooth")},600),g.slide=1}else p(`[data-slide*="${g.slide}"]`),u()},r=()=>{if(clearInterval(j),g.slide--,0===g.slide){const a=o("last");n("auto"),k.prepend(a),k.scrollLeft+=k.clientWidth,n("smooth"),k.scrollLeft=0,setTimeout(()=>{k.removeChild(a),n("auto"),p(`[data-slide*="${k.children.length}"]`),n("smooth")},600),g.slide=k.children.length}else p(`[data-slide*="${g.slide}"]`),u()},s=a=>{h.arrows&&(a.appendChild(e.cloneNode(!0)),a.appendChild(f.cloneNode(!0)))},t=a=>{a.classList.add("container-child")},u=()=>{h.autoSlide&&(j=setInterval(()=>{gotToNextSlide()},h.timer))},v=()=>{const a=document.getElementsByClassName("presentation-navigation");for(let b=0;b<a.length;b++)a[b].style.height=h.arrowSize,a[b].style.color=h.arrowColor},w={element:void 0},x=b(`<div class="presentation-js-dots-navigation-container" presentation-js-dots-container></div>`),y=b(`<svg class="presentation-js-navigation-dot" aria-hidden="true" focusable="false"
+</div>`);
+
+  const activeSlide = { slide: 1 };
+
+  const options = {
+    timer: 6000,
+    arrows: true,
+    autoSlide: true,
+    dots: false,
+    dotsSize: '13px',
+    activeDotColor: 'white',
+    inactiveDotColor: 'gray',
+    arrowSize: '25px',
+    arrowColor: 'beige',
+  };
+
+  const presentationContainer = { element: undefined };
+
+  let slideIntervalSpeed = undefined;
+  let masterContainer = undefined;
+
+  const startNavigation = () => {
+    masterContainer = presentationContainer.element;
+    options.autoSlide ? startSlideInterval() : false;
+    addEventListenersToNavigation();
+    setUserConfigs();
+  };
+
+  Element.prototype.insertChildAtIndex = function (child, index) {
+    if (!index) index = 0;
+    if (index >= this.children.length) {
+      this.appendChild(child);
+    } else {
+      this.insertBefore(child, this.children[index]);
+    }
+  };
+
+  const addEventListenersToNavigation = () => {
+    const forwardSvgs = document.getElementsByClassName(
+      'presentation-forward-arrow-container'
+    );
+
+    const backwardSvgs = document.getElementsByClassName(
+      'presentation-back-arrow-container'
+    );
+
+    for (let index = 0; index < forwardSvgs.length; index++) {
+      forwardSvgs[index].addEventListener('click', () => {
+        goToNextSlide();
+      });
+
+      backwardSvgs[index].addEventListener('click', () => {
+        goToPrevSlide();
+      });
+    }
+  };
+
+  const changeScrollBehavior = (behavior) => {
+    masterContainer.style.scrollBehavior = behavior;
+  };
+
+  const createChild = (position) => {
+    if (position === 'first') {
+      return masterContainer.children[0].cloneNode(true);
+    }
+
+    return masterContainer.children[
+      masterContainer.children.length - 1
+    ].cloneNode(true);
+  };
+
+  const scrollIntoView = (query) => {
+    document.querySelector(query).scrollIntoView(true);
+  };
+
+  // FORWARD
+  const goToNextSlide = () => {
+    clearInterval(slideIntervalSpeed);
+    activeSlide.slide++;
+
+    if (activeSlide.slide > masterContainer.children.length) {
+      activeSlide.slide--;
+
+      const tempChild = createChild('first');
+      masterContainer.appendChild(tempChild);
+      masterContainer.scrollLeft += masterContainer.clientWidth;
+      changeScrollBehavior('auto');
+
+      setTimeout(() => {
+        masterContainer.scrollLeft = 0;
+        masterContainer.removeChild(tempChild);
+        changeScrollBehavior('smooth');
+      }, 600);
+
+      activeSlide.slide = 1;
+    } else {
+      scrollIntoView(`[data-slide*="${activeSlide.slide}"]`);
+      startSlideInterval();
+    }
+  };
+
+  // BACKWARD
+  const goToPrevSlide = () => {
+    clearInterval(slideIntervalSpeed);
+    activeSlide.slide--;
+
+    if (activeSlide.slide === 0) {
+      const tempChild = createChild('last');
+      changeScrollBehavior('auto');
+      masterContainer.prepend(tempChild);
+      masterContainer.scrollLeft += masterContainer.clientWidth;
+      changeScrollBehavior('smooth');
+      masterContainer.scrollLeft = 0;
+
+      setTimeout(() => {
+        masterContainer.removeChild(tempChild);
+        changeScrollBehavior('auto');
+        scrollIntoView(`[data-slide*="${masterContainer.children.length}"]`);
+        changeScrollBehavior('smooth');
+      }, 600);
+
+      activeSlide.slide = masterContainer.children.length;
+    } else {
+      scrollIntoView(`[data-slide*="${activeSlide.slide}"]`);
+      startSlideInterval();
+    }
+  };
+
+  // ADDS NAVIGATION ICONS TO EACH SLIDE
+  const addNavigationSVGs = (el) => {
+    if (options.arrows) {
+      el.appendChild(forward.cloneNode(true));
+      el.appendChild(backward.cloneNode(true));
+    }
+  };
+
+  // ADDS CLASS TO CHILDREN TO CONTAIN IN CAROUSEL
+  const addClassToChildren = (el) => {
+    el.classList.add('container-child');
+  };
+
+  const startSlideInterval = () => {
+    if (options.autoSlide) {
+      slideIntervalSpeed = setInterval(() => {
+        goToNextSlide();
+      }, options.timer);
+    }
+  };
+
+  const setUserConfigs = () => {
+    const arrows = document.getElementsByClassName('presentation-navigation');
+    for (let i = 0; i < arrows.length; i++) {
+      arrows[i].style.height = options.arrowSize;
+      arrows[i].style.color = options.arrowColor;
+    }
+  };
+
+  const dotsContainer = { element: undefined };
+
+  function htmlToElement$1(html) {
+    var template = document.createElement('template');
+    html = html.trim();
+    template.innerHTML = html;
+    return template.content.firstChild;
+  }
+
+  const dotsNavigationContainer = htmlToElement$1(
+    `<div class="presentation-js-dots-navigation-container" presentation-js-dots-container></div>`
+  );
+
+  const dotSVG = htmlToElement$1(`<svg class="presentation-js-navigation-dot" aria-hidden="true" focusable="false"
 data-prefix="fas" data-icon="circle" class=" svg-inline--fa fa-circle fa-w-16" role="img"
 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 <path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z">
 </path>
-</svg>`);let z;const A=()=>!!h.dots&&void(z=i.element,w.element=document.getEle,B(),D(),C(),E(),F()),B=()=>{const a=i.element.children;for(let b=0;b<a.length;b++)if(a[b].hasAttribute("presentation-js-dots-container"))return w.element=a[b]},C=()=>{for(let a=0;a<z.children.length;a++){const b=z.children[a];b.appendChild(x.cloneNode(!0))}},D=()=>{const a=z.children.length;for(let b=0;b<a;b++){const a=y;a.setAttribute("slide",b+1),x.appendChild(a.cloneNode(!0))}},E=()=>{const a=document.getElementsByClassName("presentation-js-dots-navigation-container");for(let b=0;b<a.length;b++){const c=a[b].children,d=b+1;for(let a=0;a<c.length;a++)c[a].style.color=d===a+1?h.activeDotColor:h.inactiveDotColor}},F=()=>{const a=document.getElementsByClassName("presentation-js-navigation-dot");for(let b=0;b<a.length;b++)a[b].style.height=h.dotsSize,a[b].style.height=h.dotsSize,a[b].addEventListener("click",()=>{G(a[b])})},G=a=>{clearInterval(j);const b=a.getAttribute("slide");document.querySelector(`[data-slide*="${b}"]`).scrollIntoView(!0),g.slide=+b,u()};window.onkeydown=a=>{const b=document.activeElement===i.element;a=a||window.event,b&&"ArrowRight"===a.key&&(a.preventDefault(),q()),b&&"ArrowLeft"===a.key&&(a.preventDefault(),r())};let H;const I=()=>{for(let a,b=0;b<H.children.length;b++)a=H.children[b],a.dataset.slide?(t(a),s(a)):"presentation-js-dots-navigation-container"!==a.classList.value&&H.removeChild(a)},J=()=>H.classList.add("presentation-js-setup"),K=()=>H.setAttribute("tabindex",1),L=()=>{const a=document.body.children;for(let b=0;b<a.length;b++)return a[b].hasAttribute("presentation-js")?(i.element=a[b],!0):(console.error("Please provide a container with the attribute: presentation-js"),!1)},M=a=>{if(a)for(const b in a)h.hasOwnProperty(b)&&(typeof a[b]==typeof h[b]?h[b]=a[b]:console.error(`invalid value for ${b}`))};return a.start=function(a){return!!L()&&void(M(a),c())},Object.defineProperty(a,"__esModule",{value:!0}),a}({});
+</svg>`);
+
+  let container = undefined;
+
+  const startDotsNavigation = () => {
+    if (!options.dots) {
+      return false;
+    }
+
+    container = presentationContainer.element;
+    dotsContainer.element = document.getEle;
+
+    setDotsContainer();
+    generateDots();
+    injectDots();
+    setActiveClassOnDotsContainers();
+    setUserConfigs$1();
+  };
+
+  const setDotsContainer = () => {
+    const presentationContainerChildren = presentationContainer.element.children;
+    for (let index = 0; index < presentationContainerChildren.length; index++) {
+      if (
+        presentationContainerChildren[index].hasAttribute(
+          'presentation-js-dots-container'
+        )
+      ) {
+        return (dotsContainer.element = presentationContainerChildren[index]);
+      }
+    }
+  };
+
+  const injectDots = () => {
+    for (let index = 0; index < container.children.length; index++) {
+      const child = container.children[index];
+      child.appendChild(dotsNavigationContainer.cloneNode(true));
+    }
+  };
+
+  const generateDots = () => {
+    const numOfChildren = container.children.length;
+    for (let index = 0; index < numOfChildren; index++) {
+      const dot = dotSVG;
+      dot.setAttribute('slide', index + 1);
+
+      dotsNavigationContainer.appendChild(dot.cloneNode(true));
+    }
+  };
+
+  const setActiveClassOnDotsContainers = () => {
+    const parent = document.getElementsByClassName(
+      'presentation-js-dots-navigation-container'
+    );
+
+    for (let i = 0; i < parent.length; i++) {
+      const child = parent[i].children;
+      const currentSlide = i + 1;
+      for (let j = 0; j < child.length; j++) {
+        if (currentSlide === j + 1) {
+          child[j].style.color = options.activeDotColor;
+        } else {
+          child[j].style.color = options.inactiveDotColor;
+        }
+      }
+    }
+  };
+
+  const setUserConfigs$1 = () => {
+    const dots = document.getElementsByClassName(
+      'presentation-js-navigation-dot'
+    );
+    for (let i = 0; i < dots.length; i++) {
+      dots[i].style.height = options.dotsSize;
+      dots[i].style.height = options.dotsSize;
+      dots[i].addEventListener('click', () => {
+        goToSlide(dots[i]);
+      });
+    }
+  };
+
+  const goToSlide = (el) => {
+    clearInterval(slideIntervalSpeed);
+    const elDataSlide = el.getAttribute('slide');
+    const query = `[data-slide*="${elDataSlide}"]`;
+
+    document.querySelector(query).scrollIntoView(true);
+
+    activeSlide.slide = +elDataSlide;
+    startSlideInterval();
+  };
+
+  window.onkeydown = (e) => {
+    // check for focus
+    const isFocused = document.activeElement === presentationContainer.element;
+
+    e = e || window.event;
+
+    if (isFocused && e.key === 'ArrowRight') {
+      e.preventDefault();
+      goToNextSlide();
+    }
+
+    if (isFocused && e.key === 'ArrowLeft') {
+      e.preventDefault();
+      goToPrevSlide();
+    }
+  };
+
+  let container$1 = undefined;
+
+  // MASTER FUNCTION TO CREATE PRESETATION
+  function build() {
+    container$1 = presentationContainer.element;
+
+    addClassToContainer();
+    addFocusToContainer();
+    setupPresentation();
+    startNavigation();
+    startDotsNavigation();
+  }
+
+  // MASTER LOOP TO SETUP PRESENTATION CAROUSEL
+  const setupPresentation = () => {
+    for (let i = 0; i < container$1.children.length; i++) {
+      let child = container$1.children[i];
+      if (child.dataset.slide) {
+        addClassToChildren(child);
+        addNavigationSVGs(child);
+      } else {
+        if (
+          child.classList.value !== 'presentation-js-dots-navigation-container'
+        ) {
+          container$1.removeChild(child);
+        }
+      }
+    }
+  };
+
+  const addClassToContainer = () =>
+    container$1.classList.add('presentation-js-setup');
+
+  const addFocusToContainer = () => container$1.setAttribute('tabindex', 1);
+
+  const checkIfContainerExist = () => {
+    const documentChildren = document.body.children;
+
+    for (let index = 0; index < documentChildren.length; index++) {
+      if (documentChildren[index].hasAttribute('presentation-js')) {
+        presentationContainer.element = documentChildren[index];
+        return true;
+      } else {
+        console.error(
+          'Please provide a container with the attribute: presentation-js'
+        );
+        return false;
+      }
+    }
+  };
+
+  const setupConfig = (config) => {
+    if (config) {
+      for (const option in config) {
+        if (options.hasOwnProperty(option)) {
+          if (typeof config[option] === typeof options[option]) {
+            options[option] = config[option];
+          } else {
+            console.error(`invalid value for ${option}`);
+          }
+        }
+      }
+    }
+  };
+
+  function start(config) {
+    if (!checkIfContainerExist()) {
+      return false;
+    }
+
+    setupConfig(config);
+    build();
+  }
+
+  exports.start = start;
+
+  Object.defineProperty(exports, '__esModule', { value: true });
+
+  return exports;
+
+}({}));
